@@ -1,7 +1,8 @@
+const debug = require('debug')('client')
 const request = require('request')
 const zlib = require('zlib')
 
-module.exports = class ScreepsScripts {
+module.exports = class ScreepsModules {
   constructor (options) {
     this.options = Object.assign({}, {
       email: '',
@@ -42,7 +43,7 @@ module.exports = class ScreepsScripts {
     })
   }
 
-  fetch (branch) {
+  retrieve (branch) {
     return this.request('/api/user/code', {
       method: 'GET',
       gzip: true,
@@ -58,8 +59,14 @@ module.exports = class ScreepsScripts {
     options.auth = this.auth
     options.baseUrl = this.options.serverUrl
 
+    debug(`Requesting: ${JSON.stringify(options, null, 2)}`)
+
     return new Promise((resolve, reject) => {
       request(options, (err, response, body) => {
+        debug(`Error: ${JSON.stringify(err)}`)
+        debug(`Response: ${JSON.stringify(response)}`)
+        debug(`Body: ${JSON.stringify(body)}`)
+
         if (err) {
           return reject(err)
         }

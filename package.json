@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run -s lint; npm run -s test",
+    "debug": "DEBUG=client ava --serial",
     "test": "ava --verbose",
     "lint": "standard | snazzy",
     "container": "export NAME=${PWD##*/}; export CACHE=npm-lazy; export CACHE_URL=http://${CACHE}; docker ps -a | grep -q $CACHE && npm run -s container:cache-start || npm run -s container:cache-run; docker ps -a | grep -q $NAME && npm run -s container:app-start || npm run -s container:app-run",
@@ -41,6 +42,7 @@
     }
   },
   "dependencies": {
+    "debug": "^2.3.2",
     "request": "^2.78.0"
   },
   "devDependencies": {
