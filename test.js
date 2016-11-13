@@ -42,7 +42,7 @@ test('Test commit with defaults', async t => {
   t.deepEqual(res, {ok: 1})
 })
 
-test('Test custom API URL', async t => {
+test('Test custom server URL', async t => {
   t.plan(1)
 
   nock('http://localhost:8888')
@@ -54,7 +54,7 @@ test('Test custom API URL', async t => {
     })
 
   await new ScreepsCommit({
-    apiUrl: 'http://localhost:8888/foo'
+    serverUrl: 'http://localhost:8888/foo'
   }).commit()
 })
 

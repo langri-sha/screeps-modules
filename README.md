@@ -19,7 +19,7 @@ import ScreepsCommit from 'screeps-commit'
   const client = new ScreepsCommit({
     email: 'EMAIL',
     password: 'PASSWORD',
-    apiUrl: 'https://screeps.com',
+    serverUrl: 'https://screeps.com',
     // Compress commit sources
     gzip: false
   })

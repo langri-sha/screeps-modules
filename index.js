@@ -6,7 +6,7 @@ module.exports = class ScreepsCommit {
     this.options = Object.assign({}, {
       email: '',
       password: '',
-      apiUrl: 'https://screeps.com',
+      serverUrl: 'https://screeps.com',
       gzip: false
     }, options)
   }
@@ -56,7 +56,7 @@ module.exports = class ScreepsCommit {
   request (url, options) {
     options.uri = url
     options.auth = this.auth
-    options.baseUrl = this.options.apiUrl
+    options.baseUrl = this.options.serverUrl
 
     return new Promise((resolve, reject) => {
       request(options, (err, response, body) => {
