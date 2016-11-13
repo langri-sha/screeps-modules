@@ -1,5 +1,5 @@
 {
-  "name": "screeps-commit-scripts",
+  "name": "screeps-scripts",
   "version": "1.0.0-alpha",
   "description": "Commit scripts to a Screeps server",
   "main": "index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/langri-sha/screeps-commit-scripts.git"
+    "url": "git+https://github.com/langri-sha/screeps-scripts.git"
   },
   "keywords": [
     "screeps",
@@ -26,9 +26,9 @@
   "author": "Filip Dupanović",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/langri-sha/screeps-commit-scripts/issues"
+    "url": "https://github.com/langri-sha/screeps-scripts/issues"
   },
-  "homepage": "https://github.com/langri-sha/screeps-commit-scripts#readme",
+  "homepage": "https://github.com/langri-sha/screeps-scripts#readme",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"

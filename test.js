@@ -1,7 +1,7 @@
 import test from 'ava'
 import nock from 'nock'
 
-import ScreepsCommit from './index'
+import ScreepsScripts from './index'
 
 const ok = [200, {ok: 1}]
 
@@ -31,7 +31,7 @@ test('Test commit with defaults', async t => {
       return ok
     })
 
-  const client = await new ScreepsCommit({
+  const client = await new ScreepsScripts({
     email: 'foobar',
     password: 'barbaz'
   })
@@ -53,7 +53,7 @@ test('Test custom server URL', async t => {
       return ok
     })
 
-  await new ScreepsCommit({
+  await new ScreepsScripts({
     serverUrl: 'http://localhost:8888/foo'
   }).commit()
 })
@@ -71,7 +71,7 @@ test('Test commit without branch', async t => {
       return ok
     })
 
-  await new ScreepsCommit().commit({
+  await new ScreepsScripts().commit({
     foo: 'bar'
   })
 })
@@ -94,7 +94,7 @@ test('Test commit gzip', async t => {
       return ok
     })
 
-  await new ScreepsCommit({gzip: true})
+  await new ScreepsScripts({gzip: true})
     .commit({foo: 'bar'})
 })
 
@@ -111,7 +111,7 @@ test('Test fetch modules', async t => {
       }
     })
 
-  const client = await new ScreepsCommit()
+  const client = await new ScreepsScripts()
   const res = await client.fetch()
 
   t.deepEqual(res, {main: 'module.exports = () => {}'})
@@ -130,6 +130,6 @@ test('Test fetch modules from branch', async t => {
       return ok
     })
 
-  const client = await new ScreepsCommit()
+  const client = await new ScreepsScripts()
   await client.fetch('foobar')
 })

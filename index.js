@@ -1,7 +1,7 @@
 const request = require('request')
 const zlib = require('zlib')
 
-module.exports = class ScreepsCommit {
+module.exports = class ScreepsScripts {
   constructor (options) {
     this.options = Object.assign({}, {
       email: '',

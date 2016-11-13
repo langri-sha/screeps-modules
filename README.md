@@ -1,8 +1,8 @@
-# screeps-commit-scripts
+# screeps-scripts
 
-[![Build status][travis-ci-badge]](travis-ci) [![npm][npm-badge]](npm)  [![State][state-badge]]
+[![Build status][travis-ci-badge]](travis-ci) [![npm][npm-badge]](npm)
 
-Commit scripts to a Screeps server
+A thin client for committing/fetching sources from Screeps servers.
 
 # Install
 
@@ -13,10 +13,10 @@ npm install screeps-commit
 ## Usage
 
 ```
-import ScreepsCommit from 'screeps-commit'
+import ScreepsScripts from 'screeps-scripts'
 
 (async () => {
-  const client = new ScreepsCommit({
+  const client = new ScreepsScripts({
     email: 'EMAIL',
     password: 'PASSWORD',
     serverUrl: 'https://screeps.com',
@@ -38,6 +38,5 @@ import ScreepsCommit from 'screeps-commit'
 })
 ```
 
-[travis-ci]: https://travis-ci.org/langri-sha/screeps-commit-scripts
-[travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-commit-scripts.svg?branch=master
-[state-badge]: https://img.shields.io/badge/state-unstable-red.svg
+[travis-ci]: https://travis-ci.org/langri-sha/screeps-scripts
+[travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-scripts.svg?branch=master
