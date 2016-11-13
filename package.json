@@ -1,6 +1,6 @@
 {
   "name": "screeps-modules",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Commit and retrieve modules from Screeps servers",
   "main": "index.js",
   "scripts": {
