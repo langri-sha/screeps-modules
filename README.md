@@ -4,6 +4,36 @@
 
 Commit scripts to a Screeps server
 
+# Install
+
+```
+npm install screeps-commit
+```
+
+## Usage
+
+```
+import ScreepsCommit from 'screeps-commit'
+
+(async () => {
+  const client = new ScreepsCommit({
+    email: 'EMAIL',
+    password: 'PASSWORD',
+    apiUrl: 'https://screeps.com'
+  })
+
+  try {
+    // {ok: 1}
+
+    return await client.commit('sim', {
+      'main': 'module.exports = () => {console.log(Game.time)}'
+    })
+  } catch (e) {
+    console.error(e)
+  }
+})
+```
+
 [travis-ci]: https://travis-ci.org/langri-sha/screeps-commit-scripts
 [travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-commit-scripts.svg?branch=master
 [state-badge]: https://img.shields.io/badge/state-unstable-red.svg
