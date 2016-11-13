@@ -68,6 +68,15 @@ await client.retrieve()
 // => Object
 ```
 
+### `ScreepsModules#refreshToken()`
+
+Updates the client token. Returns the token.
+
+```
+await client.refreshToken()
+// => 'TOKEN'
+```
+
 [travis-ci]: https://travis-ci.org/langri-sha/screeps-scripts
 [travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-scripts.svg?branch=master
 [bithound-dependencies]: https://www.bithound.io/github/langri-sha/screeps-scripts/master/dependencies/npm

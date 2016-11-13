@@ -42,6 +42,35 @@ test('Test commit with defaults', async t => {
   t.deepEqual(res, {ok: 1})
 })
 
+test('Test refresh token', async t => {
+  t.plan(3)
+
+  nock('https://screeps.com')
+    .matchHeader('content-type', 'application/json')
+    .matchHeader('accept', 'application/json')
+    .post('/api/auth/signin', {
+      email: 'foobar',
+      password: 'barbaz'
+    })
+    .reply(() => {
+      t.pass()
+
+      return [200, {
+        ok: 1,
+        token: 'quuxnorf'
+      }]
+    })
+
+  const client = await new ScreepsModules({
+    email: 'foobar',
+    password: 'barbaz'
+  })
+
+  const token = await client.refreshToken('/test')
+  t.is(token, 'quuxnorf')
+  t.is(client.options.token, token)
+})
+
 test('Test token in request', async t => {
   t.plan(1)
 

@@ -13,6 +13,25 @@ module.exports = class ScreepsModules {
     }, options)
   }
 
+  refreshToken () {
+    const {email, password} = this.options
+
+    return this.request('/api/auth/signin', {
+      method: 'POST',
+      json: {
+        email,
+        password
+      }
+    })
+    .then(({ok, token}) => {
+      if (ok) {
+        this.options.token = token
+
+        return token
+      }
+    })
+  }
+
   commit (branch, modules) {
     if (!modules) {
       modules = branch
