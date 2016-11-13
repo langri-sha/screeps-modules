@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.0.0] - 2016-11-13
+## [1.0.1] - 2016-11-13
 ### Added
 - Token support
 - Optional support for compressing commit sources
