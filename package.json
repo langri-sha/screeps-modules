@@ -1,9 +1,10 @@
 {
-  "name": "screeps-commit-scripts",
+  "name": "screeps-scripts",
   "version": "1.0.0-alpha",
   "description": "Commit scripts to a Screeps server",
   "main": "index.js",
   "scripts": {
+    "start": "npm run -s lint; npm run -s test",
     "test": "ava --verbose",
     "lint": "standard | snazzy",
     "container": "export NAME=${PWD##*/}; export CACHE=npm-lazy; export CACHE_URL=http://${CACHE}; docker ps -a | grep -q $CACHE && npm run -s container:cache-start || npm run -s container:cache-run; docker ps -a | grep -q $NAME && npm run -s container:app-start || npm run -s container:app-run",
@@ -14,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/langri-sha/screeps-commit-scripts.git"
+    "url": "git+https://github.com/langri-sha/screeps-scripts.git"
   },
   "keywords": [
     "screeps",
@@ -25,18 +26,22 @@
   "author": "Filip Dupanović",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/langri-sha/screeps-commit-scripts/issues"
+    "url": "https://github.com/langri-sha/screeps-scripts/issues"
   },
-  "homepage": "https://github.com/langri-sha/screeps-commit-scripts#readme",
+  "homepage": "https://github.com/langri-sha/screeps-scripts#readme",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
+  "dependencies": {
+    "request": "^2.78.0"
+  },
   "devDependencies": {
     "ava": "^0.16.0",
     "commitizen": "^2.8.6",
     "cz-conventional-changelog": "^1.2.0",
+    "nock": "https://github.com/node-nock/nock#2e56026",
     "snazzy": "^5.0.0",
     "standard": "^8.5.0"
   }
