@@ -1,6 +1,7 @@
 # screeps-scripts
 
-[![Build status][travis-ci-badge]](travis-ci) [![npm][npm-badge]](npm)
+[![Build status][travis-ci-badge]](travis-ci)
+[![bitHound Dependencies][bithound-dependencies-badge]](bithound-dependencies) [![bitHound Dev Dependencies][bithound-dev-dependencies-badge]](bithound-dev-dependencies)
 
 A thin client for committing/fetching sources from Screeps servers.
 
@@ -34,3 +35,7 @@ await client.fetch('sim')
 
 [travis-ci]: https://travis-ci.org/langri-sha/screeps-scripts
 [travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-scripts.svg?branch=master
+[bithound-dependencies]: https://www.bithound.io/github/langri-sha/screeps-scripts/master/dependencies/npm
+[bithound-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-scripts/badges/dependencies.svg
+[bithound-dev-dependencies]: https://www.bithound.io/github/langri-sha/screeps-scripts/master/dependencies/npm
+[bithound-dev-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-scripts/badges/devDependencies.svg
