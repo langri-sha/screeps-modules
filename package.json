@@ -19,9 +19,12 @@
   },
   "keywords": [
     "screeps",
+    "modules",
     "request",
     "scripts",
-    "commit"
+    "commit",
+    "fetch",
+    "retrieve"
   ],
   "author": "Filip Dupanović",
   "license": "MIT",
