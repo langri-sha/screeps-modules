@@ -83,7 +83,7 @@ module.exports = class ScreepsModules {
   }
 
   down (...args) {
-    return this.retreive(...args)
+    return this.retrieve(...args)
   }
 
   push (...args) {

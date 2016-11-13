@@ -182,3 +182,29 @@ test('Test retrieve modules from branch', async t => {
   const client = await new ScreepsModules()
   await client.retrieve('foobar')
 })
+
+test('Test aliases', t => {
+  t.plan(5)
+
+  class TestClient extends ScreepsModules {
+    commit (...args) {
+      t.deepEqual(args, ['foo', 'bar'])
+    }
+
+    retrieve (...args) {
+      t.deepEqual(args, ['bar', 'baz'])
+    }
+  }
+
+  const client = Object.create(TestClient.prototype)
+
+  console.trace(client)
+
+  client.fetch('bar', 'baz')
+
+  client.up('foo', 'bar')
+  client.down('bar', 'baz')
+
+  client.push('foo', 'bar')
+  client.pull('bar', 'baz')
+})
