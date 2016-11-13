@@ -9,7 +9,7 @@ test.before(() => {
   nock.disableNetConnect()
 })
 
-test('Test defaults', async t => {
+test('Test commit with defaults', async t => {
   t.plan(2)
 
   nock('https://screeps.com')
@@ -35,7 +35,7 @@ test('Test defaults', async t => {
     email: 'foobar',
     password: 'barbaz'
   })
-  const res = await client.commit({
+  const res = await client.commit('default', {
     main: 'module.exports = () => {}'
   })
 
@@ -58,12 +58,12 @@ test('Test custom API URL', async t => {
   }).commit()
 })
 
-test('Test custom branch', async t => {
+test('Test commit without branch', async t => {
   t.plan(1)
 
   nock('https://screeps.com')
     .post('/api/user/code', {
-      branch: 'borg'
+      modules: {foo: 'bar'}
     })
     .reply(() => {
       t.pass()
@@ -71,9 +71,9 @@ test('Test custom branch', async t => {
       return ok
     })
 
-  await new ScreepsCommit({
-    branch: 'borg'
-  }).commit()
+  await new ScreepsCommit().commit({
+    foo: 'bar'
+  })
 })
 
 test('Test fetch modules', async t => {

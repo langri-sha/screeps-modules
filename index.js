@@ -5,13 +5,15 @@ module.exports = class ScreepsCommit {
     this.options = Object.assign({}, {
       email: '',
       password: '',
-      apiUrl: 'https://screeps.com',
-      branch: 'default'
+      apiUrl: 'https://screeps.com'
     }, options)
   }
 
-  commit (modules) {
-    const {branch} = this.options
+  commit (branch, modules) {
+    if (!modules) {
+      modules = branch
+      branch = undefined
+    }
 
     return this.request('/api/user/code', {
       method: 'POST',

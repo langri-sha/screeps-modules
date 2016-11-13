@@ -24,10 +24,12 @@ import ScreepsCommit from 'screeps-commit'
 
   try {
     // {ok: 1}
-
-    return await client.commit('sim', {
+    await client.commit('sim', {
       'main': 'module.exports = () => {console.log(Game.time)}'
     })
+
+    // {main: 'module.exports = () => {console.log(Game.time)}'}
+    await client.fetch('sim')
   } catch (e) {
     console.error(e)
   }
