@@ -22,6 +22,16 @@ module.exports = class ScreepsCommit {
     })
   }
 
+  fetch (branch) {
+    return this.request('/api/user/code', {
+      method: 'GET',
+      json: true,
+      qs: {
+        branch
+      }
+    })
+  }
+
   request (url, options) {
     options.uri = url
     options.auth = this.auth

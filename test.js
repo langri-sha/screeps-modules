@@ -75,3 +75,38 @@ test('Test custom branch', async t => {
     branch: 'borg'
   }).commit()
 })
+
+test('Test fetch modules', async t => {
+  t.plan(2)
+
+  nock('https://screeps.com')
+    .get('/api/user/code')
+    .reply(() => {
+      t.pass()
+
+      return {
+        main: 'module.exports = () => {}'
+      }
+    })
+
+  const client = await new ScreepsCommit()
+  const res = await client.fetch()
+
+  t.deepEqual(res, {main: 'module.exports = () => {}'})
+})
+
+test('Test fetch modules from branch', async t => {
+  t.plan(1)
+
+  nock('https://screeps.com')
+    .get('/api/user/code')
+    .query({branch: 'foobar'})
+    .reply(() => {
+      t.pass()
+
+      return ok
+    })
+
+  const client = await new ScreepsCommit()
+  await client.fetch('foobar')
+})
