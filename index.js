@@ -1,11 +1,13 @@
 const request = require('request')
+const zlib = require('zlib')
 
 module.exports = class ScreepsCommit {
   constructor (options) {
     this.options = Object.assign({}, {
       email: '',
       password: '',
-      apiUrl: 'https://screeps.com'
+      apiUrl: 'https://screeps.com',
+      gzip: false
     }, options)
   }
 
@@ -15,18 +17,35 @@ module.exports = class ScreepsCommit {
       branch = undefined
     }
 
+    if (!this.options.gzip) {
+      return this.request('/api/user/code', {
+        method: 'POST',
+        json: {
+          branch,
+          modules
+        }
+      })
+    }
+
+    const compressed = zlib.gzipSync(JSON.stringify({
+      branch,
+      modules
+    }))
+
     return this.request('/api/user/code', {
       method: 'POST',
-      json: {
-        branch,
-        modules
-      }
+      headers: {
+        'Content-Encoding': 'gzip',
+        'Content-Type': 'application/json'
+      },
+      body: compressed.toString('hex')
     })
   }
 
   fetch (branch) {
     return this.request('/api/user/code', {
       method: 'GET',
+      gzip: true,
       json: true,
       qs: {
         branch

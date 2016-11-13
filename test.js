@@ -76,6 +76,28 @@ test('Test commit without branch', async t => {
   })
 })
 
+test('Test commit gzip', async t => {
+  t.plan(2)
+
+  nock('https://screeps.com')
+    .matchHeader('content-encoding', 'gzip')
+    .matchHeader('content-type', 'application/json')
+    .post('/api/user/code')
+    .reply((req, body) => {
+      t.deepEqual(body, {
+        modules: {
+          foo: 'bar'
+        }
+      })
+      t.pass()
+
+      return ok
+    })
+
+  await new ScreepsCommit({gzip: true})
+    .commit({foo: 'bar'})
+})
+
 test('Test fetch modules', async t => {
   t.plan(2)
 
@@ -99,6 +121,7 @@ test('Test fetch modules from branch', async t => {
   t.plan(1)
 
   nock('https://screeps.com')
+    .matchHeader('accept-encoding', 'gzip, deflate')
     .get('/api/user/code')
     .query({branch: 'foobar'})
     .reply(() => {
