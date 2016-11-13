@@ -1,7 +1,7 @@
 {
-  "name": "screeps-scripts",
-  "version": "1.0.0-alpha",
-  "description": "Commit scripts to a Screeps server",
+  "name": "screeps-modules",
+  "version": "1.0.0",
+  "description": "Commit and retrieve modules from Screeps servers",
   "main": "index.js",
   "scripts": {
     "start": "npm run -s lint; npm run -s test",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/langri-sha/screeps-scripts.git"
+    "url": "git+https://github.com/langri-sha/screeps-modules.git"
   },
   "keywords": [
     "screeps",
@@ -29,9 +29,9 @@
   "author": "Filip Dupanović",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/langri-sha/screeps-scripts/issues"
+    "url": "https://github.com/langri-sha/screeps-modules/issues"
   },
-  "homepage": "https://github.com/langri-sha/screeps-scripts#readme",
+  "homepage": "https://github.com/langri-sha/screeps-modules#readme",
   "engines": {
     "node": ">=6"
   },
