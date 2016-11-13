@@ -34,6 +34,9 @@
       "path": "cz-conventional-changelog"
     }
   },
+  "dependencies": {
+    "request": "^2.78.0"
+  },
   "devDependencies": {
     "ava": "^0.16.0",
     "commitizen": "^2.8.6",
