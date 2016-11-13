@@ -55,6 +55,26 @@ module.exports = class ScreepsModules {
     })
   }
 
+  fetch (...args) {
+    return this.retrieve(...args)
+  }
+
+  up (...args) {
+    return this.commit(...args)
+  }
+
+  down (...args) {
+    return this.retreive(...args)
+  }
+
+  push (...args) {
+    return this.commit(...args)
+  }
+
+  pull (...args) {
+    return this.retrieve(...args)
+  }
+
   request (url, options = {}) {
     options.uri = url
     options.auth = this.auth(url, options)
