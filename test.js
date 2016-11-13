@@ -1,7 +1,7 @@
 import test from 'ava'
 import nock from 'nock'
 
-import ScreepsScripts from './index'
+import ScreepsModules from './index'
 
 const ok = [200, {ok: 1}]
 
@@ -31,7 +31,7 @@ test('Test commit with defaults', async t => {
       return ok
     })
 
-  const client = await new ScreepsScripts({
+  const client = await new ScreepsModules({
     email: 'foobar',
     password: 'barbaz'
   })
@@ -40,6 +40,55 @@ test('Test commit with defaults', async t => {
   })
 
   t.deepEqual(res, {ok: 1})
+})
+
+test('Test refresh token', async t => {
+  t.plan(3)
+
+  nock('https://screeps.com')
+    .matchHeader('content-type', 'application/json')
+    .matchHeader('accept', 'application/json')
+    .post('/api/auth/signin', {
+      email: 'foobar',
+      password: 'barbaz'
+    })
+    .reply(() => {
+      t.pass()
+
+      return [200, {
+        ok: 1,
+        token: 'quuxnorf'
+      }]
+    })
+
+  const client = await new ScreepsModules({
+    email: 'foobar',
+    password: 'barbaz'
+  })
+
+  const token = await client.refreshToken('/test')
+  t.is(token, 'quuxnorf')
+  t.is(client.options.token, token)
+})
+
+test('Test token in request', async t => {
+  t.plan(1)
+
+  nock('https://screeps.com')
+    .matchHeader('x-token', 'foobar')
+    .matchHeader('x-username', 'foobar')
+    .get('/test')
+    .reply(() => {
+      t.pass()
+
+      return ok
+    })
+
+  const client = await new ScreepsModules({
+    token: 'foobar'
+  })
+
+  await client.request('/test')
 })
 
 test('Test custom server URL', async t => {
@@ -53,7 +102,7 @@ test('Test custom server URL', async t => {
       return ok
     })
 
-  await new ScreepsScripts({
+  await new ScreepsModules({
     serverUrl: 'http://localhost:8888/foo'
   }).commit()
 })
@@ -71,7 +120,7 @@ test('Test commit without branch', async t => {
       return ok
     })
 
-  await new ScreepsScripts().commit({
+  await new ScreepsModules().commit({
     foo: 'bar'
   })
 })
@@ -94,11 +143,11 @@ test('Test commit gzip', async t => {
       return ok
     })
 
-  await new ScreepsScripts({gzip: true})
+  await new ScreepsModules({gzip: true})
     .commit({foo: 'bar'})
 })
 
-test('Test fetch modules', async t => {
+test('Test retrieve modules', async t => {
   t.plan(2)
 
   nock('https://screeps.com')
@@ -111,13 +160,13 @@ test('Test fetch modules', async t => {
       }
     })
 
-  const client = await new ScreepsScripts()
-  const res = await client.fetch()
+  const client = await new ScreepsModules()
+  const res = await client.retrieve()
 
   t.deepEqual(res, {main: 'module.exports = () => {}'})
 })
 
-test('Test fetch modules from branch', async t => {
+test('Test retrieve modules from branch', async t => {
   t.plan(1)
 
   nock('https://screeps.com')
@@ -130,6 +179,6 @@ test('Test fetch modules from branch', async t => {
       return ok
     })
 
-  const client = await new ScreepsScripts()
-  await client.fetch('foobar')
+  const client = await new ScreepsModules()
+  await client.retrieve('foobar')
 })
