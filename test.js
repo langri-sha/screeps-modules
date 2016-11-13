@@ -42,6 +42,26 @@ test('Test commit with defaults', async t => {
   t.deepEqual(res, {ok: 1})
 })
 
+test('Test token in request', async t => {
+  t.plan(1)
+
+  nock('https://screeps.com')
+    .matchHeader('x-token', 'foobar')
+    .matchHeader('x-username', 'foobar')
+    .get('/test')
+    .reply(() => {
+      t.pass()
+
+      return ok
+    })
+
+  const client = await new ScreepsModules({
+    token: 'foobar'
+  })
+
+  await client.request('/test')
+})
+
 test('Test custom server URL', async t => {
   t.plan(1)
 

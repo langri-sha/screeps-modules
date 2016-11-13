@@ -7,6 +7,7 @@ module.exports = class ScreepsModules {
     this.options = Object.assign({}, {
       email: '',
       password: '',
+      token: '',
       serverUrl: 'https://screeps.com',
       gzip: false
     }, options)
@@ -54,10 +55,12 @@ module.exports = class ScreepsModules {
     })
   }
 
-  request (url, options) {
+  request (url, options = {}) {
     options.uri = url
-    options.auth = this.auth
+    options.auth = this.auth(url, options)
     options.baseUrl = this.options.serverUrl
+
+    this.auth(url, options)
 
     debug(`Requesting: ${JSON.stringify(options, null, 2)}`)
 
@@ -76,12 +79,23 @@ module.exports = class ScreepsModules {
     })
   }
 
-  get auth () {
-    const {email, password} = this.options
+  auth (url, options) {
+    if (url === '/api/auth/signin') {
+      return
+    }
 
-    return {
-      username: email,
-      password
+    const {email, password, token} = this.options
+
+    if (token !== '') {
+      options.headers = Object.assign({}, options.headers, {
+        'X-Token': token,
+        'X-Username': token
+      })
+    } else {
+      options.auth = {
+        username: email,
+        password
+      }
     }
   }
 }
