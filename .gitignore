@@ -5,4 +5,5 @@
 !.travis.yml
 
 node_modules/
+codecov/
 npm-debug.log*
