@@ -41,7 +41,7 @@
     "ava": "^0.16.0",
     "commitizen": "^2.8.6",
     "cz-conventional-changelog": "^1.2.0",
-    "nock": "^9.0.2",
+    "nock": "https://github.com/node-nock/nock#2e56026",
     "snazzy": "^5.0.0",
     "standard": "^8.5.0"
   }
