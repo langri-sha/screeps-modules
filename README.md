@@ -1,6 +1,6 @@
 # screeps-modules
 
-[![Build status][travis-ci-badge]](travis-ci)
+[![Build status][travis-ci-badge]](travis-ci) [![NPM][npm-badge]](npm)
 [![bitHound Dependencies][bithound-dependencies-badge]](bithound-dependencies) [![bitHound Dev Dependencies][bithound-dev-dependencies-badge]](bithound-dev-dependencies)
 
 A thin client for committing/retrieving modules from a Screeps server, including [private servers](http://support.screeps.com/hc/en-us/articles/213625765-Screeps-private-server-released-).
@@ -77,9 +77,11 @@ await client.refreshToken()
 // => 'TOKEN'
 ```
 
-[travis-ci]: https://travis-ci.org/langri-sha/screeps-scripts
-[travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-scripts.svg?branch=master
-[bithound-dependencies]: https://www.bithound.io/github/langri-sha/screeps-scripts/master/dependencies/npm
-[bithound-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-scripts/badges/dependencies.svg
-[bithound-dev-dependencies]: https://www.bithound.io/github/langri-sha/screeps-scripts/master/dependencies/npm
-[bithound-dev-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-scripts/badges/devDependencies.svg
+[travis-ci]: https://travis-ci.org/langri-sha/screeps-modules
+[travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-modules.svg?branch=master
+[npm]: https://www.npmjs.com/package/screeps-modules
+[npm-badge]: https://img.shields.io/npm/v/screeps-modules.svg
+[bithound-dependencies]: https://www.bithound.io/github/langri-sha/screeps-modules/master/dependencies/npm
+[bithound-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-modules/badges/dependencies.svg
+[bithound-dev-dependencies]: https://www.bithound.io/github/langri-sha/screeps-modules/master/dependencies/npm
+[bithound-dev-dependencies-badge]: https://www.bithound.io/github/langri-sha/screeps-modules/badges/devDependencies.svg
