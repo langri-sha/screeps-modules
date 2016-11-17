@@ -113,6 +113,10 @@ module.exports = class ScreepsModules {
           return reject(err)
         }
 
+        if (response.headers['x-token']) {
+          this.options.token = response.headers['x-token']
+        }
+
         if (body.hasOwnProperty('error')) {
           return reject(body.error)
         }

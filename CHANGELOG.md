@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Added
+- Always set token found response headers
 - Improved error handling
 
 ## [1.0.2] - 2016-11-13
