@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+### Added
+- Improved error handling
+
 ## [1.0.2] - 2016-11-13
 ### Added
 - Coverage

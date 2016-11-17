@@ -1,4 +1,4 @@
-const debug = require('debug')('client')
+const debug = require('debug')('screeps-modules')
 const request = require('request')
 const zlib = require('zlib')
 
@@ -111,6 +111,14 @@ module.exports = class ScreepsModules {
 
         if (err) {
           return reject(err)
+        }
+
+        if (body.hasOwnProperty('error')) {
+          return reject(body.error)
+        }
+
+        if (response.statusCode % 400 < 200) {
+          return reject(body)
         }
 
         resolve(body)

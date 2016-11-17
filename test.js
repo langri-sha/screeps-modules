@@ -179,8 +179,68 @@ test('Test retrieve modules from branch', async t => {
       return ok
     })
 
-  const client = await new ScreepsModules()
+  const client = new ScreepsModules()
   await client.retrieve('foobar')
+})
+
+test('Test bad response', async t => {
+  t.plan(2)
+
+  nock('https://screeps.com')
+    .get('/foo')
+    .reply(() => {
+      t.pass()
+
+      return [400, 'Bad request']
+    })
+
+  const client = new ScreepsModules()
+
+  try {
+    await client.request('/foo')
+
+    t.fail()
+  } catch (e) {
+    t.truthy(e.toString().match(/Bad request/))
+  }
+})
+
+test('Test error in response', async t => {
+  const client = new ScreepsModules()
+
+  nock('https://screeps.com')
+    .matchHeader('accept', 'application/json')
+    .get('/bar')
+    .reply(() => {
+      t.pass()
+
+      return [400, {error: 'Bad response'}]
+    })
+
+  try {
+    await client.request('/bar', {method: 'GET', json: true})
+
+    t.fail()
+  } catch (e) {
+    t.is(e.toString(), 'Bad response')
+  }
+
+  nock('https://screeps.com')
+    .matchHeader('accept', 'application/json')
+    .get('/baz')
+    .reply(() => {
+      t.pass()
+
+      return [200, {error: 'Bad response'}]
+    })
+
+  try {
+    await client.request('/baz', {method: 'GET', json: true})
+
+    t.fail()
+  } catch (e) {
+    t.is(e.toString(), 'Bad response')
+  }
 })
 
 test('Test aliases', t => {
@@ -197,8 +257,6 @@ test('Test aliases', t => {
   }
 
   const client = Object.create(TestClient.prototype)
-
-  console.trace(client)
 
   client.fetch('bar', 'baz')
 

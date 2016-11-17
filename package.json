@@ -46,12 +46,12 @@
     "request": "^2.78.0"
   },
   "devDependencies": {
-    "ava": "^0.16.0",
+    "ava": "^0.17.0",
     "codecov": "^1.0.1",
     "commitizen": "^2.8.6",
     "cz-conventional-changelog": "^1.2.0",
     "nock": "https://github.com/node-nock/nock#2e56026",
-    "nyc": "^8.4.0",
+    "nyc": "^9.0.1",
     "snazzy": "^5.0.0",
     "standard": "^8.5.0"
   }

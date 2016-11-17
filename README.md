@@ -76,6 +76,10 @@ await client.refreshToken()
 // => 'TOKEN'
 ```
 
+## Troubleshooting
+
+To avoid leaking sensitive information, the client only returns opaque responses and is safe to use in CI. If you need to inspect the responses, start your process with `DEBUG=screeps-modules node $ARGS`.
+
 [travis-ci]: https://travis-ci.org/langri-sha/screeps-modules
 [travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-modules.svg?branch=master
 [npm]: https://www.npmjs.com/package/screeps-modules
