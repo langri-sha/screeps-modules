@@ -113,6 +113,14 @@ module.exports = class ScreepsModules {
           return reject(err)
         }
 
+        if (body.hasOwnProperty('error')) {
+          return reject(body.error)
+        }
+
+        if (response.statusCode % 400 < 200) {
+          return reject(body)
+        }
+
         resolve(body)
       })
     })
