@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Added
+- Invalidate token on 401 responses
 - Always set token found response headers
 - Improved error handling
 
