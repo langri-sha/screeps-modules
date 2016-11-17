@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## [1.1.0] - 2016-11-18
 ### Added
 - Invalidate token on 401 responses
 - Always set token found response headers
@@ -15,3 +15,4 @@
 - Support for committing modules
 
 [1.0.2]: https://github.com/langri-sha/screeps-scripts/compare/283a050...v1.0.2
+[1.1.0]: https://github.com/langri-sha/screeps-scripts/compare/v1.0.2...v1.1.0
