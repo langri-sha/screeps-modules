@@ -91,6 +91,35 @@ test('Test token in request', async t => {
   await client.request('/test')
 })
 
+test('Test always consumes token from response', async t => {
+  const client = new ScreepsModules()
+
+  nock('https://screeps.com')
+    .get('/token-response')
+    .reply(200, 'Foobar', {'X-Token': 'foobar'})
+
+  await client.request('/token-response')
+  t.is(client.options.token, 'foobar')
+})
+
+test('Test removes token on 401 responses', async t => {
+  const client = new ScreepsModules({
+    token: 'foobar'
+  })
+
+  nock('https://screeps.com')
+    .get('/unauthorized')
+    .reply(401, 'Unauthorized')
+
+  try {
+    await client.request('/unauthorized')
+
+    t.fail()
+  } catch (e) {
+    t.is(client.options.token, '')
+  }
+})
+
 test('Test custom server URL', async t => {
   t.plan(1)
 
