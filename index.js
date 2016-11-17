@@ -1,4 +1,4 @@
-const debug = require('debug')('client')
+const debug = require('debug')('screeps-modules')
 const request = require('request')
 const zlib = require('zlib')
 
