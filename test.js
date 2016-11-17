@@ -198,8 +198,6 @@ test('Test aliases', t => {
 
   const client = Object.create(TestClient.prototype)
 
-  console.trace(client)
-
   client.fetch('bar', 'baz')
 
   client.up('foo', 'bar')
