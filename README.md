@@ -2,9 +2,9 @@
 
 [![Build status][travis-ci-badge]][travis-ci] [![NPM][npm-badge]][npm] ![Node version][node-badge] [![bitHound Dependencies][bithound-dependencies-badge]][bithound-dependencies] [![bitHound Dev Dependencies][bithound-dev-dependencies-badge]][bithound-dev-dependencies]  [![Coverage][codecov-badge]][codecov]
 
-A thin client for committing/retrieving modules from a Screeps server, including [private servers](http://support.screeps.com/hc/en-us/articles/213625765-Screeps-private-server-released-).
+A thin client for committing/retrieving modules from a Screeps server, including [private servers](http://support.screeps.com/hc/en-us/articles/213625765-Screeps-private-server-released-). If you are using Webpack, see [langri-sha/screeps-webpack-plugin](https://github.com/langri-sha/screeps-webpack-plugin).
 
-For something more comprehensive, check out [`screepers/node-sreeps-api`](https://github.com/screepers/node-screeps-api).
+For something more comprehensive, check out [screepers/node-sreeps-api](https://github.com/screepers/node-screeps-api).
 
 # Install
 
