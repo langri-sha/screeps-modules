@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "debug": "^2.4.1",
-    "request": "^2.79.0"
+    "request": "2.79.0"
   },
   "devDependencies": {
     "ava": "^0.17.0",
