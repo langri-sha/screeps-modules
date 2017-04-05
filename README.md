@@ -32,6 +32,7 @@ const client = new ScreepsModules({
   password: 'PASSWORD',
   token: 'TOKEN'
   serverUrl: 'https://screeps.com',
+  serverPassword: 'SERVER_PASS',
   gzip: false
 }
 ```

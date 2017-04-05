@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+### Added
+- `X-Server-Password` header with corresponding `serverPassword` field for protected private servers
+
 ## [1.1.2] - 2016-11-18
 ### Added
 - Invalidate token on 401 responses
