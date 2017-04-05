@@ -9,6 +9,7 @@ module.exports = class ScreepsModules {
       password: '',
       token: '',
       serverUrl: 'https://screeps.com',
+      serverPassword: '',
       gzip: false
     }, options)
   }
@@ -139,7 +140,7 @@ module.exports = class ScreepsModules {
       return
     }
 
-    const {email, password, token} = this.options
+    const {email, password, token, serverPassword} = this.options
 
     if (token !== '') {
       options.headers = Object.assign({}, options.headers, {
@@ -151,6 +152,12 @@ module.exports = class ScreepsModules {
         username: email,
         password
       }
+    }
+
+    if (serverPassword) {
+      options.headers = Object.assign({}, options.headers, {
+        'X-Server-Password': serverPassword
+      })
     }
   }
 }

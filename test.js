@@ -136,6 +136,25 @@ test('Test custom server URL', async t => {
   }).commit()
 })
 
+test('Test custom server password', async t => {
+  t.plan(1)
+
+  nock('http://localhost:8888')
+    .matchHeader('X-Server-Password', 'foobar')
+    .post('/api/user/code')
+    .reply(() => {
+      t.pass()
+
+      return ok
+    })
+
+  await new ScreepsModules({
+    serverUrl: 'http://localhost:8888/',
+    serverPassword: 'foobar'
+  }).commit()
+
+})
+
 test('Test commit without branch', async t => {
   t.plan(1)
 
