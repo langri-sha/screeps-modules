@@ -152,7 +152,6 @@ test('Test custom server password', async t => {
     serverUrl: 'http://localhost:8888/',
     serverPassword: 'foobar'
   }).commit()
-
 })
 
 test('Test commit without branch', async t => {
