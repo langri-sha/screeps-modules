@@ -154,7 +154,7 @@ module.exports = class ScreepsModules {
       }
     }
 
-    if (serverPassword) {
+    if (serverPassword !== '') {
       options.headers = Object.assign({}, options.headers, {
         'X-Server-Password': serverPassword
       })
