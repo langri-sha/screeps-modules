@@ -51,7 +51,7 @@
     "commitizen": "^2.8.6",
     "cz-conventional-changelog": "^2.0.0",
     "nock": "https://github.com/node-nock/nock#2e56026",
-    "nyc": "^10.0.0",
+    "nyc": "^11.0.2",
     "snazzy": "^6.0.0",
     "standard": "^10.0.0"
   }
