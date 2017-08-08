@@ -42,7 +42,7 @@
     }
   },
   "dependencies": {
-    "debug": "^2.4.1",
+    "debug": "^3.0.0",
     "request": "^2.79.0"
   },
   "devDependencies": {
