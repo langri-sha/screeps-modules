@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "ava": "^0.18.2",
-    "codecov": "^2.1.0",
+    "codecov": "^3.0.0",
     "commitizen": "^2.8.6",
     "cz-conventional-changelog": "^2.0.0",
     "nock": "https://github.com/node-nock/nock#2e56026",
