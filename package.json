@@ -53,6 +53,6 @@
     "nock": "https://github.com/node-nock/nock#2e56026",
     "nyc": "^10.0.0",
     "snazzy": "^6.0.0",
-    "standard": "^10.0.0"
+    "standard": "^11.0.0"
   }
 }
