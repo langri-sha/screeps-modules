@@ -49,7 +49,7 @@
     "ava": "^0.18.2",
     "codecov": "^2.1.0",
     "commitizen": "^2.8.6",
-    "cz-conventional-changelog": "^2.0.0",
+    "cz-conventional-changelog": "^3.0.0",
     "nock": "https://github.com/node-nock/nock#2e56026",
     "nyc": "^10.0.0",
     "snazzy": "^6.0.0",
