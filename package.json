@@ -50,7 +50,7 @@
     "codecov": "^3.0.0",
     "commitizen": "^4.0.0",
     "cz-conventional-changelog": "^3.0.0",
-    "nock": "https://github.com/node-nock/nock#1ee467c",
+    "nock": "https://github.com/node-nock/nock#d91282e",
     "nyc": "^18.0.0",
     "snazzy": "^9.0.0",
     "standard": "^17.0.0"
