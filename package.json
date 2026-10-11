@@ -41,10 +41,6 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "dependencies": {
-    "debug": "^4.0.0",
-    "request": "^2.79.0"
-  },
   "devDependencies": {
     "ava": "^8.0.0",
     "codecov": "^3.0.0",
