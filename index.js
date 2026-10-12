@@ -119,6 +119,12 @@ module.exports = class ScreepsModules {
 
     let method = options.method || 'GET'
     const origin = new URL(base).origin
+    if (options.timeout != null && (!Number.isInteger(options.timeout) || options.timeout < 0 || options.timeout > 2147483647)) {
+      throw new RangeError('timeout must be an integer from 0 to 2147483647 milliseconds')
+    }
+    const timeoutSignal = options.timeout > 0 ? AbortSignal.timeout(options.timeout) : undefined
+    const signals = [options.signal, timeoutSignal].filter(signal => signal != null)
+    const signal = signals.length === 2 ? AbortSignal.any(signals) : signals[0]
     if (options.qs) {
       for (const [key, value] of Object.entries(options.qs)) {
         if (value !== undefined) target.searchParams.set(key, value)
@@ -137,6 +143,7 @@ module.exports = class ScreepsModules {
         method,
         headers,
         body,
+        signal,
         redirect: 'manual'
       })
 

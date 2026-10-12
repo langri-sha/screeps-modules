@@ -14,7 +14,7 @@ async function serve (t, respond) {
       headers: req.headers,
       body: Buffer.concat(chunks)
     })
-    const [status, payload, headers = {}] = respond(requests.at(-1), requests.length)
+    const [status, payload, headers = {}] = await respond(requests.at(-1), requests.length)
     res.writeHead(status, headers)
     res.end(payload)
   })
@@ -120,6 +120,39 @@ test('network failure rejects without an HTTP response', async t => {
   const url = `http://127.0.0.1:${server.address().port}`
   await new Promise(resolve => server.close(resolve))
   await t.throwsAsync(new ScreepsModules({ serverUrl: url }).request('/test'), { instanceOf: TypeError })
+})
+
+test('caller cancellation rejects with its original reason', async t => {
+  let received
+  const started = new Promise(resolve => { received = resolve })
+  const { url } = await serve(t, async () => {
+    received()
+    await new Promise(resolve => setTimeout(resolve, 100))
+    return [200, 'late']
+  })
+  const controller = new AbortController()
+  const reason = new Error('Cancelled by caller')
+  const pending = new ScreepsModules({ serverUrl: url }).request('/slow', { signal: controller.signal, timeout: 500 })
+  await started
+  controller.abort(reason)
+  await pending.then(() => t.fail('Expected cancellation'), error => t.is(error, reason))
+})
+
+test('timeout bounds the request and rejects with TimeoutError', async t => {
+  const { url } = await serve(t, async () => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+    return [200, 'late']
+  })
+  const client = new ScreepsModules({ serverUrl: url })
+  await t.throwsAsync(client.request('/slow', { timeout: 20 }), { name: 'TimeoutError' })
+})
+
+test('zero disables the timeout and invalid values reject', async t => {
+  const { url } = await serve(t, () => [200, 'ok'])
+  const client = new ScreepsModules({ serverUrl: url })
+  t.is(await client.request('/test', { timeout: 0 }), 'ok')
+  await t.throwsAsync(client.request('/test', { timeout: -1 }), { instanceOf: RangeError })
+  await t.throwsAsync(client.request('/test', { timeout: 2147483648 }), { instanceOf: RangeError })
 })
 
 test('same-origin redirect retains authentication', async t => {
