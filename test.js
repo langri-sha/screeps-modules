@@ -1,9 +1,9 @@
 import test from 'ava'
 import nock from 'nock'
 
-import ScreepsModules from './index'
+import ScreepsModules from './index.js'
 
-const ok = [200, {ok: 1}]
+const ok = [200, { ok: 1 }]
 
 test.before(() => {
   nock.disableNetConnect()
@@ -39,7 +39,7 @@ test('Test commit with defaults', async t => {
     main: 'module.exports = () => {}'
   })
 
-  t.deepEqual(res, {ok: 1})
+  t.deepEqual(res, { ok: 1 })
 })
 
 test('Test refresh token', async t => {
@@ -96,7 +96,7 @@ test('Test always consumes token from response', async t => {
 
   nock('https://screeps.com')
     .get('/token-response')
-    .reply(200, 'Foobar', {'X-Token': 'foobar'})
+    .reply(200, 'Foobar', { 'X-Token': 'foobar' })
 
   await client.request('/token-response')
   t.is(client.options.token, 'foobar')
@@ -159,7 +159,7 @@ test('Test commit without branch', async t => {
 
   nock('https://screeps.com')
     .post('/api/user/code', {
-      modules: {foo: 'bar'}
+      modules: { foo: 'bar' }
     })
     .reply(() => {
       t.pass()
@@ -190,8 +190,8 @@ test('Test commit gzip', async t => {
       return ok
     })
 
-  await new ScreepsModules({gzip: true})
-    .commit({foo: 'bar'})
+  await new ScreepsModules({ gzip: true })
+    .commit({ foo: 'bar' })
 })
 
 test('Test retrieve modules', async t => {
@@ -202,15 +202,15 @@ test('Test retrieve modules', async t => {
     .reply(() => {
       t.pass()
 
-      return {
+      return [200, {
         main: 'module.exports = () => {}'
-      }
+      }]
     })
 
   const client = await new ScreepsModules()
   const res = await client.retrieve()
 
-  t.deepEqual(res, {main: 'module.exports = () => {}'})
+  t.deepEqual(res, { main: 'module.exports = () => {}' })
 })
 
 test('Test retrieve modules from branch', async t => {
@@ -219,7 +219,7 @@ test('Test retrieve modules from branch', async t => {
   nock('https://screeps.com')
     .matchHeader('accept-encoding', 'gzip, deflate')
     .get('/api/user/code')
-    .query({branch: 'foobar'})
+    .query({ branch: 'foobar' })
     .reply(() => {
       t.pass()
 
@@ -261,11 +261,11 @@ test('Test error in response', async t => {
     .reply(() => {
       t.pass()
 
-      return [400, {error: 'Bad response'}]
+      return [400, { error: 'Bad response' }]
     })
 
   try {
-    await client.request('/bar', {method: 'GET', json: true})
+    await client.request('/bar', { method: 'GET', json: true })
 
     t.fail()
   } catch (e) {
@@ -278,11 +278,11 @@ test('Test error in response', async t => {
     .reply(() => {
       t.pass()
 
-      return [200, {error: 'Bad response'}]
+      return [200, { error: 'Bad response' }]
     })
 
   try {
-    await client.request('/baz', {method: 'GET', json: true})
+    await client.request('/baz', { method: 'GET', json: true })
 
     t.fail()
   } catch (e) {
