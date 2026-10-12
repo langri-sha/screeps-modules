@@ -4,6 +4,3 @@ node_js:
 
 before_script:
 - npm run -s lint
-
-after_script:
-- nyc report --reporter=lcov && codecov
