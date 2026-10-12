@@ -1,6 +1,6 @@
 # screeps-modules
 
-[![Build status][travis-ci-badge]][travis-ci] [![NPM][npm-badge]][npm] ![Node version][node-badge] [![bitHound Dependencies][bithound-dependencies-badge]][bithound-dependencies] [![bitHound Dev Dependencies][bithound-dev-dependencies-badge]][bithound-dev-dependencies]
+[![NPM][npm-badge]][npm] ![Node version][node-badge] [![bitHound Dependencies][bithound-dependencies-badge]][bithound-dependencies] [![bitHound Dev Dependencies][bithound-dev-dependencies-badge]][bithound-dev-dependencies]
 
 A thin client for committing/retrieving modules from a Screeps server, including [private servers](http://support.screeps.com/hc/en-us/articles/213625765-Screeps-private-server-released-). If you are using Webpack, see [langri-sha/screeps-webpack-plugin](https://github.com/langri-sha/screeps-webpack-plugin).
 
@@ -83,8 +83,6 @@ await client.refreshToken()
 
 To avoid leaking sensitive information, the client only returns opaque responses and is safe to use in CI. If you need to inspect the responses, start your process with `DEBUG=screeps-modules node $ARGS`.
 
-[travis-ci]: https://travis-ci.org/langri-sha/screeps-modules
-[travis-ci-badge]: https://travis-ci.org/langri-sha/screeps-modules.svg?branch=master
 [npm]: https://www.npmjs.com/package/screeps-modules
 [npm-badge]: https://img.shields.io/npm/v/screeps-modules.svg
 [node-badge]: https://img.shields.io/node/v/screeps-modules.svg
