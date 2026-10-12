@@ -1,5 +1,4 @@
 const debug = require('debug')('screeps-modules')
-const request = require('request')
 const zlib = require('zlib')
 
 module.exports = class ScreepsModules {
@@ -60,7 +59,7 @@ module.exports = class ScreepsModules {
         'Content-Encoding': 'gzip',
         'Content-Type': 'application/json'
       },
-      body: compressed.toString('hex')
+      body: compressed
     })
   }
 
@@ -95,44 +94,88 @@ module.exports = class ScreepsModules {
     return this.retrieve(...args)
   }
 
-  request (url, options = {}) {
-    options.uri = url
-    options.auth = this.auth(url, options)
-    options.baseUrl = this.options.serverUrl
+  async request (url, options = {}) {
+    const base = this.options.serverUrl.replace(/\/$/, '') + '/'
+    let target = new URL(url.replace(/^\//, ''), base)
+    const headers = new Headers(options.headers)
+    const auth = { headers: Object.fromEntries(headers) }
+    this.auth(url, auth)
 
-    this.auth(url, options)
+    for (const [name, value] of Object.entries(auth.headers || {})) {
+      headers.set(name, value)
+    }
 
-    debug(`Requesting: ${JSON.stringify(options, null, 2)}`)
+    if (auth.auth) {
+      const { username, password } = auth.auth
+      headers.set('Authorization', `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`)
+    }
 
-    return new Promise((resolve, reject) => {
-      request(options, (err, response, body) => {
-        debug(`Error: ${JSON.stringify(err)}`)
-        debug(`Response: ${JSON.stringify(response)}`)
-        debug(`Body: ${JSON.stringify(body)}`)
+    let body = options.body
+    if (options.json && options.json !== true) {
+      if (!headers.has('Content-Type')) headers.set('Content-Type', 'application/json')
+      body = JSON.stringify(options.json)
+    }
+    if (options.json && !headers.has('Accept')) headers.set('Accept', 'application/json')
 
-        if (err) {
-          return reject(err)
-        }
+    let method = options.method || 'GET'
+    const origin = new URL(base).origin
+    if (options.qs) {
+      for (const [key, value] of Object.entries(options.qs)) {
+        if (value !== undefined) target.searchParams.set(key, value)
+      }
+    }
 
-        if (response.statusCode === 401) {
-          this.options.token = ''
-        }
-
-        if (response.headers['x-token']) {
-          this.options.token = response.headers['x-token']
-        }
-
-        if (Object.prototype.hasOwnProperty.call(body, 'error')) {
-          return reject(body.error)
-        }
-
-        if (response.statusCode % 400 < 200) {
-          return reject(body)
-        }
-
-        resolve(body)
+    for (let redirects = 0; ; redirects++) {
+      if (!['http:', 'https:'].includes(target.protocol)) {
+        throw new Error(`Unsupported URL protocol: ${target.protocol}`)
+      }
+      if (target.origin !== origin) {
+        throw new Error('Cross-origin request is not allowed')
+      }
+      debug(`Requesting ${method} ${target}`)
+      const response = await fetch(target, {
+        method,
+        headers,
+        body,
+        redirect: 'manual'
       })
-    })
+
+      if ([301, 302, 303, 307, 308].includes(response.status)) {
+        await response.body?.cancel()
+        if (redirects >= 10) throw new Error('Too many redirects')
+        const location = response.headers.get('location')
+        if (!location) throw new Error('Redirect response has no location')
+        const next = new URL(location, target)
+        if (next.origin !== origin) throw new Error('Cross-origin redirect is not allowed')
+        if (response.status === 303 || ((response.status === 301 || response.status === 302) && method.toUpperCase() === 'POST')) {
+          method = 'GET'
+          body = undefined
+          headers.delete('Content-Type')
+          headers.delete('Content-Encoding')
+        }
+        target = next
+        continue
+      }
+
+      if (response.status === 401) this.options.token = ''
+      const token = response.headers.get('x-token')
+      if (token) this.options.token = token
+
+      const text = await response.text()
+      let result = text
+      if (options.json && text) {
+        try {
+          result = JSON.parse(text)
+        } catch (error) {
+          debug(`Non-JSON response: ${error.message}`)
+        }
+      }
+      if (result && typeof result === 'object' && Object.prototype.hasOwnProperty.call(result, 'error')) {
+        throw result.error
+      }
+      if (response.status >= 400) throw result
+      return result
+    }
   }
 
   auth (url, options) {
