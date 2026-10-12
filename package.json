@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "ava": "^8.0.0",
-    "codecov": "^3.0.0",
     "commitizen": "^4.0.0",
     "cz-conventional-changelog": "^3.0.0",
     "nock": "^14.0.0",
