@@ -15,7 +15,7 @@ module.exports = class ScreepsModules {
   }
 
   refreshToken () {
-    const {email, password} = this.options
+    const { email, password } = this.options
 
     return this.request('/api/auth/signin', {
       method: 'POST',
@@ -24,13 +24,13 @@ module.exports = class ScreepsModules {
         password
       }
     })
-    .then(({ok, token}) => {
-      if (ok) {
-        this.options.token = token
+      .then(({ ok, token }) => {
+        if (ok) {
+          this.options.token = token
 
-        return token
-      }
-    })
+          return token
+        }
+      })
   }
 
   commit (branch, modules) {
@@ -140,7 +140,7 @@ module.exports = class ScreepsModules {
       return
     }
 
-    const {email, password, token, serverPassword} = this.options
+    const { email, password, token, serverPassword } = this.options
 
     if (token !== '') {
       options.headers = Object.assign({}, options.headers, {

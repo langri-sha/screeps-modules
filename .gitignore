@@ -3,6 +3,9 @@
 !.bithoundrc
 !.editorconfig
 !.eslintrc
+!.github/
+!.github/workflows/
+!.github/workflows/ci.yml
 
 node_modules/
 coverage/
