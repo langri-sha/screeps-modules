@@ -175,6 +175,39 @@ test('POST redirect switches to GET without forwarding the body', async t => {
   t.falsy(requests[1].headers['content-encoding'])
 })
 
+for (const status of [301, 302]) {
+  test(`${status} rewrites POST to GET without forwarding the body`, async t => {
+    const { url, requests } = await serve(t, req => req.url === '/start'
+      ? [status, '', { Location: '/next' }]
+      : [200, 'ok'])
+    const client = new ScreepsModules({ serverUrl: url })
+    t.is(await client.request('/start', { method: 'POST', json: { value: 1 } }), 'ok')
+    t.is(requests[1].method, 'GET')
+    t.is(requests[1].body.length, 0)
+    t.falsy(requests[1].headers['content-type'])
+  })
+}
+
+test('303 preserves HEAD', async t => {
+  const { url, requests } = await serve(t, req => req.url === '/start'
+    ? [303, '', { Location: '/next' }]
+    : [200, 'ok'])
+  const client = new ScreepsModules({ serverUrl: url })
+  t.is(await client.request('/start', { method: 'HEAD' }), '')
+  t.is(requests[1].method, 'HEAD')
+})
+
+test('308 preserves POST method and body', async t => {
+  const { url, requests } = await serve(t, req => req.url === '/start'
+    ? [308, '', { Location: '/next' }]
+    : [200, 'ok'])
+  const client = new ScreepsModules({ serverUrl: url })
+  t.is(await client.request('/start', { method: 'POST', json: { value: 1 } }), 'ok')
+  t.is(requests[1].method, 'POST')
+  t.deepEqual(JSON.parse(requests[1].body), { value: 1 })
+  t.is(requests[1].headers['content-type'], 'application/json')
+})
+
 test('cross-origin redirect does not send credentials', async t => {
   const destination = await serve(t, () => [200, 'leaked'])
   const source = await serve(t, () => [302, '', { Location: `${destination.url}/next` }])

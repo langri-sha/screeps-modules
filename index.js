@@ -154,7 +154,7 @@ module.exports = class ScreepsModules {
         if (!location) throw new Error('Redirect response has no location')
         const next = new URL(location, target)
         if (next.origin !== origin) throw new Error('Cross-origin redirect is not allowed')
-        if (response.status === 303 || ((response.status === 301 || response.status === 302) && method.toUpperCase() === 'POST')) {
+        if ((response.status === 303 && method.toUpperCase() !== 'HEAD') || ((response.status === 301 || response.status === 302) && method.toUpperCase() === 'POST')) {
           method = 'GET'
           body = undefined
           headers.delete('Content-Type')
