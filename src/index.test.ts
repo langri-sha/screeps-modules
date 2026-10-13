@@ -1,31 +1,57 @@
-import { createServer } from 'node:http'
+import { type IncomingHttpHeaders, type Server, createServer } from 'node:http'
+import type { AddressInfo } from 'node:net'
 import { gunzipSync, gzipSync } from 'node:zlib'
 
 import { expect, onTestFinished, test } from '@langri-sha/vitest'
 
-import ScreepsModules from './index.js'
+import ScreepsModules, { type CommitArguments } from './index.js'
 
-async function serve(respond) {
-  const requests = []
+interface RecordedRequest {
+  method?: string
+  url?: string
+  headers: IncomingHttpHeaders
+  body: Buffer
+}
+
+type Reply = [
+  status: number,
+  payload: string | Buffer,
+  headers?: Record<string, string>,
+]
+
+async function serve(
+  respond: (request: RecordedRequest, count: number) => Reply | Promise<Reply>,
+) {
+  const requests: RecordedRequest[] = []
   const server = createServer(async (req, res) => {
-    const chunks = []
+    const chunks: Buffer[] = []
     for await (const chunk of req) chunks.push(chunk)
-    requests.push({
+    const request = {
       method: req.method,
       url: req.url,
       headers: req.headers,
       body: Buffer.concat(chunks),
-    })
+    }
+    requests.push(request)
     const [status, payload, headers = {}] = await respond(
-      requests.at(-1),
+      request,
       requests.length,
     )
     res.writeHead(status, headers)
     res.end(payload)
   })
-  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
-  onTestFinished(() => new Promise((resolve) => server.close(resolve)))
-  return { url: `http://127.0.0.1:${server.address().port}`, requests }
+  const port = await listen(server)
+  onTestFinished(() => close(server))
+  return { url: `http://127.0.0.1:${port}`, requests }
+}
+
+async function listen(server: Server) {
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  return (server.address() as AddressInfo).port
+}
+
+function close(server: Server) {
+  return new Promise<void>((resolve) => server.close(() => resolve()))
 }
 
 test('commit sends JSON and Basic auth over HTTP', async () => {
@@ -41,7 +67,7 @@ test('commit sends JSON and Basic auth over HTTP', async () => {
   expect(requests[0].headers.authorization).toBe('Basic Zm9vOmJhcg==')
   expect(requests[0].headers['content-type']).toBe('application/json')
   expect(requests[0].headers.accept).toBe('application/json')
-  expect(JSON.parse(requests[0].body)).toEqual({
+  expect(JSON.parse(requests[0].body.toString())).toEqual({
     branch: 'default',
     modules: { main: 'code' },
   })
@@ -50,7 +76,9 @@ test('commit sends JSON and Basic auth over HTTP', async () => {
 test('commit omits branch when modules are first', async () => {
   const { url, requests } = await serve(() => [200, '{"ok":1}'])
   await new ScreepsModules({ serverUrl: url }).commit({ main: 'code' })
-  expect(JSON.parse(requests[0].body)).toEqual({ modules: { main: 'code' } })
+  expect(JSON.parse(requests[0].body.toString())).toEqual({
+    modules: { main: 'code' },
+  })
 })
 
 test('signin sends credentials in JSON without an auth header', async () => {
@@ -66,7 +94,7 @@ test('signin sends credentials in JSON without an auth header', async () => {
   expect(requests[0].url).toBe('/api/auth/signin')
   expect(requests[0].headers.authorization).toBeFalsy()
   expect(requests[0].headers['x-token']).toBeFalsy()
-  expect(JSON.parse(requests[0].body)).toEqual({
+  expect(JSON.parse(requests[0].body.toString())).toEqual({
     email: 'foo',
     password: 'bar',
   })
@@ -94,7 +122,7 @@ test('custom base path, branch query, and gzip accept header are preserved', asy
     await new ScreepsModules({ serverUrl: `${url}/foo/` }).retrieve('sim'),
   ).toEqual({ ok: 1 })
   expect(requests[0].url).toBe('/foo/api/user/code?branch=sim')
-  expect(requests[0].headers['accept-encoding'].includes('gzip')).toBe(true)
+  expect(requests[0].headers['accept-encoding']?.includes('gzip')).toBe(true)
 })
 
 test('gzip commit uploads compressed JSON bytes', async () => {
@@ -104,7 +132,7 @@ test('gzip commit uploads compressed JSON bytes', async () => {
   })
   expect(requests[0].headers['content-encoding']).toBe('gzip')
   expect(requests[0].headers['content-type']).toBe('application/json')
-  expect(JSON.parse(gunzipSync(requests[0].body))).toEqual({
+  expect(JSON.parse(gunzipSync(requests[0].body).toString())).toEqual({
     modules: { foo: 'bar' },
   })
 })
@@ -166,17 +194,16 @@ test('HTTP failure rejects with its response body', async () => {
 
 test('network failure rejects without an HTTP response', async () => {
   const server = createServer()
-  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
-  const url = `http://127.0.0.1:${server.address().port}`
-  await new Promise((resolve) => server.close(resolve))
+  const url = `http://127.0.0.1:${await listen(server)}`
+  await close(server)
   await expect(
     new ScreepsModules({ serverUrl: url }).request('/test'),
   ).rejects.toBeInstanceOf(TypeError)
 })
 
 test('caller cancellation rejects with its original reason', async () => {
-  let received
-  const started = new Promise((resolve) => {
+  let received: () => void = () => {}
+  const started = new Promise<void>((resolve) => {
     received = resolve
   })
   const { url } = await serve(async () => {
@@ -277,7 +304,7 @@ test('308 preserves POST method and body', async () => {
     await client.request('/start', { method: 'POST', json: { value: 1 } }),
   ).toBe('ok')
   expect(requests[1].method).toBe('POST')
-  expect(JSON.parse(requests[1].body)).toEqual({ value: 1 })
+  expect(JSON.parse(requests[1].body.toString())).toEqual({ value: 1 })
   expect(requests[1].headers['content-type']).toBe('application/json')
 })
 
@@ -323,31 +350,33 @@ test('too many redirects reject before another request', async () => {
 
 test('HTTPS server URL is passed to fetch', async () => {
   const originalFetch = globalThis.fetch
-  let target
-  globalThis.fetch = async (url) => {
+  let target: URL | undefined
+  globalThis.fetch = (async (url: URL) => {
     target = url
     return new Response('ok')
-  }
+  }) as typeof fetch
   try {
     expect(
       await new ScreepsModules({
         serverUrl: 'https://screeps.example/path',
       }).request('/test'),
     ).toBe('ok')
-    expect(target.href).toBe('https://screeps.example/path/test')
+    expect(target?.href).toBe('https://screeps.example/path/test')
   } finally {
     globalThis.fetch = originalFetch
   }
 })
 
 test('aliases call commit and retrieve', () => {
-  const calls = []
+  const calls: unknown[][] = []
   class Client extends ScreepsModules {
-    commit(...args) {
+    override async commit(...args: CommitArguments) {
       calls.push(['commit', ...args])
+      return { ok: 1 }
     }
-    retrieve(...args) {
+    override async retrieve(...args: [branch?: string]) {
       calls.push(['retrieve', ...args])
+      return { ok: 1 }
     }
   }
   const client = new Client()

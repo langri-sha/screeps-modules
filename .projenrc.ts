@@ -9,7 +9,7 @@ const project = new Project({
     bugsUrl: 'https://github.com/langri-sha/screeps-modules/issues',
     copyrightYear: '2016',
     description: 'Commit and retrieve modules from Screeps servers',
-    entrypoint: 'src/index.js',
+    entrypoint: 'src/index.ts',
     type: 'module',
     homepage: 'https://github.com/langri-sha/screeps-modules#readme',
     keywords: [
@@ -32,6 +32,8 @@ const project = new Project({
       '@langri-sha/lint-staged@0.9.10',
       '@langri-sha/prettier@0.4.11',
       '@langri-sha/tsconfig@1.1.1',
+      '@types/debug@4.1.12',
+      '@types/node@24.19.1',
       '@langri-sha/vitest@0.2.3',
       '@vitest/coverage-v8@5.0.3',
       'vitest@5.0.3',
@@ -139,14 +141,13 @@ const project = new Project({
       compilerOptions: {
         noEmit: true,
       },
-      include: ['src/index.d.ts', 'src/types.test.ts'],
+      include: ['src'],
     },
   },
   worktrunk: {},
 })
 
 project.package?.addField('packageManager', 'pnpm@12.10.1')
-project.package?.addField('types', 'src/index.d.ts')
 
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
 project.package?.setScript('debug', 'DEBUG=client vitest run')
