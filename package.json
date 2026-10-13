@@ -4,7 +4,7 @@
   "description": "Commit and retrieve modules from Screeps servers",
   "main": "index.js",
   "scripts": {
-    "start": "npm run -s lint; npm run -s test",
+    "start": "pnpm run -s lint; pnpm run -s test",
     "debug": "DEBUG=client ava --serial",
     "test": "nyc ava --verbose",
     "lint": "standard | snazzy",
@@ -51,5 +51,6 @@
     "nyc": "^18.0.0",
     "snazzy": "^9.0.0",
     "standard": "^17.0.0"
-  }
+  },
+  "packageManager": "pnpm@12.10.1"
 }
