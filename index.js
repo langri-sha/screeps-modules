@@ -1,5 +1,6 @@
-const debug = require('debug')('screeps-modules')
 const zlib = require('zlib')
+
+const debug = require('debug')('screeps-modules')
 
 module.exports = class ScreepsModules {
   constructor (options) {
