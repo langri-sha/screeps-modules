@@ -1,4 +1,4 @@
-import { Project } from '@langri-sha/projen-project'
+import { Project, TypeScriptConfig } from '@langri-sha/projen-project'
 
 const project = new Project({
   name: 'screeps-modules',
@@ -58,6 +58,7 @@ const project = new Project({
         'pnpm-workspace.yaml',
         'prettier.config.js',
         'renovate.json5',
+        'scripts/**',
         'tsconfig.json',
       ],
     },
@@ -107,7 +108,17 @@ const project = new Project({
   lintStaged: {},
   lintSynthesized: {},
   npmIgnore: {
-    ignorePatterns: ['*.test.*', '/*.yaml', '/CODEOWNERS'],
+    ignorePatterns: [
+      '*.test.*',
+      '/*.config.*',
+      '/*.json5',
+      '/*.yaml',
+      '/CODEOWNERS',
+      '/change/',
+      '/coverage/',
+      '/dagger.*',
+      '/scripts/',
+    ],
   },
   prettier: {
     ignorePatterns: ['CHANGELOG.md'],
@@ -155,5 +166,29 @@ project.package?.setScript('test', 'vitest run --coverage')
 project.package?.setScript('lint', 'eslint .')
 
 project.gitignore.addPatterns('coverage/')
+
+project.package?.addField('publishConfig', {
+  access: 'public',
+  main: 'dist/index.js',
+  types: 'dist/index.d.ts',
+})
+
+project.package?.setScript(
+  'prepublishOnly',
+  'rm -rf dist; tsc --project tsconfig.build.json',
+)
+
+new TypeScriptConfig(project, {
+  fileName: 'tsconfig.build.json',
+  config: {
+    extends: '@langri-sha/tsconfig/build',
+    compilerOptions: {
+      module: 'nodenext',
+      moduleResolution: 'nodenext',
+    },
+    include: ['src'],
+    exclude: ['**/*.test.*'],
+  },
+})
 
 project.synth()
