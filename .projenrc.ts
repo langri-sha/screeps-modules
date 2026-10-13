@@ -29,7 +29,7 @@ const project = new Project({
     deps: ['debug@^4.0.0'],
     devDeps: [
       '@langri-sha/eslint-config@0.9.19',
-      '@langri-sha/lint-staged@0.9.10',
+      '@langri-sha/lint-staged@0.9.11',
       '@langri-sha/prettier@0.4.11',
       '@langri-sha/tsconfig@1.1.1',
       '@types/debug@4.1.12',
