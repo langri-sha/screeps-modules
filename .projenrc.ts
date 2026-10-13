@@ -33,7 +33,7 @@ const project = new Project({
       '@langri-sha/prettier@0.4.11',
       '@langri-sha/tsconfig@1.1.1',
       '@types/debug@4.1.13',
-      '@types/node@24.19.1',
+      '@types/node@24.19.2',
       '@langri-sha/vitest@0.2.3',
       '@vitest/coverage-v8@5.0.3',
       'vitest@5.0.3',
