@@ -33,6 +33,9 @@ const project = new Project({
       'standard@^17.0.0',
     ],
   },
+  codeowners: {
+    '*': '@langri-sha',
+  },
   pnpmWorkspace: {
     minimumReleaseAgeExclude: ['@langri-sha/*', ...Project.presetPackages],
   },
