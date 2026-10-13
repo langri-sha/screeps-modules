@@ -9,6 +9,7 @@
 /.npmignore linguist-generated
 /.prettierignore linguist-generated
 /.projen/** linguist-generated
+/beachball.config.js linguist-generated
 /CODEOWNERS linguist-generated
 /dagger.toml linguist-generated
 /eslint.config.mjs linguist-generated
