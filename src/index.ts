@@ -163,12 +163,14 @@ export default class ScreepsModules {
 
     let body: BodyInit | undefined = options.body
     if (options.json && options.json !== true) {
-      if (!headers.has('Content-Type'))
+      if (!headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json')
+      }
       body = JSON.stringify(options.json)
     }
-    if (options.json && !headers.has('Accept'))
+    if (options.json && !headers.has('Accept')) {
       headers.set('Accept', 'application/json')
+    }
 
     let method = options.method || 'GET'
     const origin = new URL(base).origin
@@ -192,7 +194,9 @@ export default class ScreepsModules {
     const signal = signals.length === 2 ? AbortSignal.any(signals) : signals[0]
     if (options.qs) {
       for (const [key, value] of Object.entries(options.qs)) {
-        if (value !== undefined) target.searchParams.set(key, value)
+        if (value !== undefined) {
+          target.searchParams.set(key, value)
+        }
       }
     }
 
@@ -214,12 +218,17 @@ export default class ScreepsModules {
 
       if ([301, 302, 303, 307, 308].includes(response.status)) {
         await response.body?.cancel()
-        if (redirects >= 10) throw new Error('Too many redirects')
+        if (redirects >= 10) {
+          throw new Error('Too many redirects')
+        }
         const location = response.headers.get('location')
-        if (!location) throw new Error('Redirect response has no location')
+        if (!location) {
+          throw new Error('Redirect response has no location')
+        }
         const next = new URL(location, target)
-        if (next.origin !== origin)
+        if (next.origin !== origin) {
           throw new Error('Cross-origin redirect is not allowed')
+        }
         if (
           (response.status === 303 && method.toUpperCase() !== 'HEAD') ||
           ((response.status === 301 || response.status === 302) &&
@@ -234,9 +243,13 @@ export default class ScreepsModules {
         continue
       }
 
-      if (response.status === 401) this.options.token = ''
+      if (response.status === 401) {
+        this.options.token = ''
+      }
       const token = response.headers.get('x-token')
-      if (token) this.options.token = token
+      if (token) {
+        this.options.token = token
+      }
 
       const text = await response.text()
       let result: unknown = text
@@ -254,7 +267,9 @@ export default class ScreepsModules {
       ) {
         throw (result as { error: unknown }).error
       }
-      if (response.status >= 400) throw result
+      if (response.status >= 400) {
+        throw result
+      }
       return result as T
     }
   }

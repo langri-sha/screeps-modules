@@ -25,7 +25,9 @@ async function serve(
   const requests: RecordedRequest[] = []
   const server = createServer(async (req, res) => {
     const chunks: Buffer[] = []
-    for await (const chunk of req) chunks.push(chunk)
+    for await (const chunk of req) {
+      chunks.push(chunk)
+    }
     const request = {
       method: req.method,
       url: req.url,
