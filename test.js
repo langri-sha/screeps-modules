@@ -1,6 +1,8 @@
-import test from 'ava'
 import { createServer } from 'node:http'
 import { gunzipSync, gzipSync } from 'node:zlib'
+
+import test from 'ava'
+
 import ScreepsModules from './index.js'
 
 async function serve (t, respond) {
