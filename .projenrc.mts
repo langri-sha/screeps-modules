@@ -26,17 +26,21 @@ const project = new Project({
     repository: 'git+https://github.com/langri-sha/screeps-modules.git',
 
     deps: ['debug@^4.0.0'],
-    devDeps: [
-      'ava@^8.0.0',
-      'nyc@^18.0.0',
-      'snazzy@^9.0.0',
-      'standard@^17.0.0',
-    ],
+    devDeps: ['@langri-sha/eslint-config@0.9.19', 'ava@^8.0.0', 'nyc@^18.0.0'],
   },
   codeowners: {
     '*': '@langri-sha',
   },
   editorConfig: {},
+  eslint: {
+    config: [
+      { rules: { 'prettier/prettier': 'off' } },
+      {
+        files: ['index.js'],
+        rules: { '@typescript-eslint/no-require-imports': 'off' },
+      },
+    ],
+  },
   npmIgnore: {
     ignorePatterns: ['/*.yaml', '/CODEOWNERS', '/test.js'],
   },
@@ -51,6 +55,6 @@ project.package?.addField('packageManager', 'pnpm@12.10.1')
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
 project.package?.setScript('debug', 'DEBUG=client ava --serial')
 project.package?.setScript('test', 'nyc ava --verbose')
-project.package?.setScript('lint', 'standard | snazzy')
+project.package?.setScript('lint', 'eslint .')
 
 project.synth()
