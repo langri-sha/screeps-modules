@@ -40,6 +40,7 @@ const project = new Project({
   pnpmWorkspace: {
     minimumReleaseAgeExclude: ['@langri-sha/*', ...Project.presetPackages],
   },
+  worktrunk: {},
 })
 
 project.package?.addField('packageManager', 'pnpm@12.10.1')
