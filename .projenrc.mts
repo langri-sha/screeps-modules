@@ -21,7 +21,7 @@ const project = new Project({
       'retrieve',
     ],
     license: 'MIT',
-    licensed: false,
+    licensed: true,
     minNodeVersion: '24.0.0',
     repository: 'git+https://github.com/langri-sha/screeps-modules.git',
 
@@ -36,6 +36,7 @@ const project = new Project({
   codeowners: {
     '*': '@langri-sha',
   },
+  editorConfig: {},
   pnpmWorkspace: {
     minimumReleaseAgeExclude: ['@langri-sha/*', ...Project.presetPackages],
   },
