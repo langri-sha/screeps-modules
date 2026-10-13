@@ -39,7 +39,6 @@ const project = new Project({
   editorConfig: {},
   eslint: {
     config: [
-      { rules: { 'prettier/prettier': 'off' } },
       {
         files: ['index.js'],
         rules: { '@typescript-eslint/no-require-imports': 'off' },
