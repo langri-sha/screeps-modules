@@ -97,9 +97,10 @@ To avoid leaking sensitive information, the client only returns opaque responses
 and is safe to use in CI. If you need to inspect the responses, start your
 process with `DEBUG=screeps-modules node $ARGS`.
 
-[ci]: https://github.com/langri-sha/screeps-modules/actions/workflows/ci.yml
+[ci]:
+  https://github.com/langri-sha/screeps-modules/actions/workflows/workspace.yml
 [ci-badge]:
-  https://github.com/langri-sha/screeps-modules/actions/workflows/ci.yml/badge.svg
+  https://github.com/langri-sha/screeps-modules/actions/workflows/workspace.yml/badge.svg
 [npm]: https://www.npmjs.com/package/screeps-modules
 [npm-badge]: https://img.shields.io/npm/v/screeps-modules.svg
 [node-badge]: https://img.shields.io/node/v/screeps-modules.svg
