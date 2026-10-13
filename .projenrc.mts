@@ -9,7 +9,7 @@ const project = new Project({
     bugsUrl: 'https://github.com/langri-sha/screeps-modules/issues',
     copyrightYear: '2016',
     description: 'Commit and retrieve modules from Screeps servers',
-    entrypoint: 'index.js',
+    entrypoint: 'src/index.js',
     homepage: 'https://github.com/langri-sha/screeps-modules#readme',
     keywords: [
       'screeps',
@@ -56,7 +56,6 @@ const project = new Project({
         'prettier.config.mjs',
         'renovate.json5',
         'tsconfig.json',
-        'types.test.ts',
       ],
     },
   },
@@ -99,7 +98,7 @@ const project = new Project({
   eslint: {
     config: [
       {
-        files: ['index.js'],
+        files: ['src/index.js'],
         rules: { '@typescript-eslint/no-require-imports': 'off' },
       },
     ],
@@ -144,14 +143,14 @@ const project = new Project({
       compilerOptions: {
         noEmit: true,
       },
-      include: ['index.d.ts', 'types.test.ts'],
+      include: ['src/index.d.ts', 'src/types.test.ts'],
     },
   },
   worktrunk: {},
 })
 
 project.package?.addField('packageManager', 'pnpm@12.10.1')
-project.package?.addField('types', 'index.d.ts')
+project.package?.addField('types', 'src/index.d.ts')
 
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
 project.package?.setScript('debug', 'DEBUG=client vitest run')
