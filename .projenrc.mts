@@ -28,6 +28,7 @@ const project = new Project({
     deps: ['debug@^4.0.0'],
     devDeps: [
       '@langri-sha/eslint-config@0.9.19',
+      '@langri-sha/lint-staged@0.9.10',
       '@langri-sha/prettier@0.4.11',
       'ava@^8.0.0',
       'nyc@^18.0.0',
@@ -45,6 +46,10 @@ const project = new Project({
       },
     ],
   },
+  husky: {
+    'pre-commit': 'lint-staged',
+  },
+  lintStaged: {},
   lintSynthesized: {},
   npmIgnore: {
     ignorePatterns: ['/*.yaml', '/CODEOWNERS', '/test.js'],
