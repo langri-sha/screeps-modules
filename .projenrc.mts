@@ -39,6 +39,38 @@ const project = new Project({
   codeowners: {
     '*': '@langri-sha',
   },
+  dagger: {
+    engineVersion: 'v1.0.0-beta.15',
+    workspace: {
+      ignore: ['**/node_modules', '**/dist', '**/coverage', '**/*.tsbuildinfo'],
+      modules: {
+        ci: {
+          source: 'github.com/langri-sha/dagger/ci@ci/v0.1.0',
+        },
+        eslint: {
+          source: 'dagger.io/js/eslint',
+          settings: {
+            baseImageAddress: 'node:24-slim',
+            packageManager: 'pnpm',
+          },
+        },
+        prettier: {
+          source: 'dagger.io/js/prettier',
+          settings: {
+            baseImageAddress: 'node:24-slim',
+            packageManager: 'pnpm',
+          },
+        },
+        vitest: {
+          source: 'dagger.io/js/vitest',
+          settings: {
+            baseImageAddress: 'node:24-slim',
+            packageManager: 'pnpm',
+          },
+        },
+      },
+    },
+  },
   editorConfig: {},
   eslint: {
     config: [
