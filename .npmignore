@@ -2,5 +2,11 @@
 .*
 tsconfig*.json
 *.test.*
+/*.config.*
+/*.json5
 /*.yaml
 /CODEOWNERS
+/change/
+/coverage/
+/dagger.*
+/scripts/
