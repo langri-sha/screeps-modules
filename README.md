@@ -27,6 +27,14 @@ For something more comprehensive, check out
 npm install screeps-modules
 ```
 
+The package requires Node.js 24 or later, and loads through both `import` and
+`require()`:
+
+```
+import ScreepsModules from 'screeps-modules'
+const ScreepsModules = require('screeps-modules')
+```
+
 ## Usage
 
 ```
