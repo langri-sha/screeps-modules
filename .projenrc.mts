@@ -86,6 +86,7 @@ const project = new Project({
 })
 
 project.package?.addField('packageManager', 'pnpm@12.10.1')
+project.package?.addField('types', 'index.d.ts')
 
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
 project.package?.setScript('debug', 'DEBUG=client vitest run')
