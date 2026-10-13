@@ -10,6 +10,7 @@ const project = new Project({
     copyrightYear: '2016',
     description: 'Commit and retrieve modules from Screeps servers',
     entrypoint: 'src/index.js',
+    type: 'module',
     homepage: 'https://github.com/langri-sha/screeps-modules#readme',
     keywords: [
       'screeps',
@@ -44,16 +45,16 @@ const project = new Project({
         '.gitattributes',
         '.gitignore',
         '.prettierignore',
-        '.projenrc.mts',
+        '.projenrc.ts',
         'CODEOWNERS',
-        'beachball.config.js',
+        'beachball.config.cjs',
         'dagger.lock',
         'dagger.toml',
-        'eslint.config.mjs',
-        'lint-staged.config.mjs',
+        'eslint.config.js',
+        'lint-staged.config.js',
         'pnpm-lock.yaml',
         'pnpm-workspace.yaml',
-        'prettier.config.mjs',
+        'prettier.config.js',
         'renovate.json5',
         'tsconfig.json',
       ],
@@ -96,12 +97,7 @@ const project = new Project({
   },
   editorConfig: {},
   eslint: {
-    config: [
-      {
-        files: ['src/index.js'],
-        rules: { '@typescript-eslint/no-require-imports': 'off' },
-      },
-    ],
+    config: [],
   },
   husky: {
     'pre-commit': 'lint-staged',

@@ -1,8 +1,10 @@
-const zlib = require('zlib')
+import zlib from 'node:zlib'
 
-const debug = require('debug')('screeps-modules')
+import createDebug from 'debug'
 
-module.exports = class ScreepsModules {
+const debug = createDebug('screeps-modules')
+
+export default class ScreepsModules {
   constructor(options) {
     this.options = Object.assign(
       {},
@@ -241,3 +243,5 @@ module.exports = class ScreepsModules {
     }
   }
 }
+
+export { ScreepsModules as 'module.exports' }

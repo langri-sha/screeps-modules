@@ -62,4 +62,4 @@ declare class ScreepsModules {
   ): Promise<unknown>
 }
 
-export = ScreepsModules
+export default ScreepsModules
