@@ -36,18 +36,11 @@
   "engines": {
     "node": ">=24"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "debug": "^4.0.0"
   },
   "devDependencies": {
     "ava": "^8.0.0",
-    "commitizen": "^4.0.0",
-    "cz-conventional-changelog": "^3.0.0",
     "nyc": "^18.0.0",
     "snazzy": "^9.0.0",
     "standard": "^17.0.0"
