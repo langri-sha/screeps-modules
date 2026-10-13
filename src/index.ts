@@ -4,8 +4,48 @@ import createDebug from 'debug'
 
 const debug = createDebug('screeps-modules')
 
+type HeadersInit = NonNullable<RequestInit['headers']>
+type BodyInit = NonNullable<RequestInit['body']>
+
+export type Modules = Record<string, string | { binary: string }>
+
+export interface Options {
+  email?: string
+  password?: string
+  token?: string
+  serverUrl?: string
+  serverPassword?: string
+  gzip?: boolean
+}
+
+export interface CodeResponse {
+  ok: number
+  branch?: string
+  modules?: Modules
+}
+
+export interface RequestOptions {
+  method?: string
+  headers?: HeadersInit
+  body?: BodyInit
+  json?: unknown
+  qs?: Record<string, string | undefined>
+  signal?: AbortSignal
+  timeout?: number
+}
+
+export type CommitArguments =
+  [modules: Modules] | [branch: string, modules: Modules]
+
+interface AuthOptions {
+  headers?: Record<string, string>
+  auth?: { username: string; password: string }
+}
+
 export default class ScreepsModules {
-  constructor(options) {
+  options: Required<Options>
+
+  constructor(options?: Options) {
     this.options = Object.assign(
       {},
       {
@@ -20,10 +60,10 @@ export default class ScreepsModules {
     )
   }
 
-  refreshToken() {
+  refreshToken(): Promise<string | undefined> {
     const { email, password } = this.options
 
-    return this.request('/api/auth/signin', {
+    return this.request<{ ok?: number; token?: string }>('/api/auth/signin', {
       method: 'POST',
       json: {
         email,
@@ -31,18 +71,16 @@ export default class ScreepsModules {
       },
     }).then(({ ok, token }) => {
       if (ok) {
-        this.options.token = token
+        this.options.token = token as string
 
         return token
       }
     })
   }
 
-  commit(branch, modules) {
-    if (!modules) {
-      modules = branch
-      branch = undefined
-    }
+  commit(...args: CommitArguments): Promise<CodeResponse> {
+    const [branch, modules] =
+      args.length === 2 ? args : ([undefined, args[0]] as const)
 
     if (!this.options.gzip) {
       return this.request('/api/user/code', {
@@ -71,10 +109,9 @@ export default class ScreepsModules {
     })
   }
 
-  retrieve(branch) {
+  retrieve(branch?: string): Promise<CodeResponse> {
     return this.request('/api/user/code', {
       method: 'GET',
-      gzip: true,
       json: true,
       qs: {
         branch,
@@ -82,31 +119,34 @@ export default class ScreepsModules {
     })
   }
 
-  fetch(...args) {
+  fetch(...args: Parameters<ScreepsModules['retrieve']>) {
     return this.retrieve(...args)
   }
 
-  up(...args) {
+  up(...args: CommitArguments) {
     return this.commit(...args)
   }
 
-  down(...args) {
+  down(...args: Parameters<ScreepsModules['retrieve']>) {
     return this.retrieve(...args)
   }
 
-  push(...args) {
+  push(...args: CommitArguments) {
     return this.commit(...args)
   }
 
-  pull(...args) {
+  pull(...args: Parameters<ScreepsModules['retrieve']>) {
     return this.retrieve(...args)
   }
 
-  async request(url, options = {}) {
+  async request<T = unknown>(
+    url: string,
+    options: RequestOptions = {},
+  ): Promise<T> {
     const base = this.options.serverUrl.replace(/\/$/, '') + '/'
     let target = new URL(url.replace(/^\//, ''), base)
     const headers = new Headers(options.headers)
-    const auth = { headers: Object.fromEntries(headers) }
+    const auth: AuthOptions = { headers: Object.fromEntries(headers) }
     this.auth(url, auth)
 
     for (const [name, value] of Object.entries(auth.headers || {})) {
@@ -121,7 +161,7 @@ export default class ScreepsModules {
       )
     }
 
-    let body = options.body
+    let body: BodyInit | undefined = options.body
     if (options.json && options.json !== true) {
       if (!headers.has('Content-Type'))
         headers.set('Content-Type', 'application/json')
@@ -143,9 +183,11 @@ export default class ScreepsModules {
       )
     }
     const timeoutSignal =
-      options.timeout > 0 ? AbortSignal.timeout(options.timeout) : undefined
+      options.timeout !== undefined && options.timeout > 0
+        ? AbortSignal.timeout(options.timeout)
+        : undefined
     const signals = [options.signal, timeoutSignal].filter(
-      (signal) => signal != null,
+      (signal): signal is AbortSignal => signal != null,
     )
     const signal = signals.length === 2 ? AbortSignal.any(signals) : signals[0]
     if (options.qs) {
@@ -197,12 +239,12 @@ export default class ScreepsModules {
       if (token) this.options.token = token
 
       const text = await response.text()
-      let result = text
+      let result: unknown = text
       if (options.json && text) {
         try {
           result = JSON.parse(text)
         } catch (error) {
-          debug(`Non-JSON response: ${error.message}`)
+          debug(`Non-JSON response: ${(error as Error).message}`)
         }
       }
       if (
@@ -210,14 +252,14 @@ export default class ScreepsModules {
         typeof result === 'object' &&
         Object.prototype.hasOwnProperty.call(result, 'error')
       ) {
-        throw result.error
+        throw (result as { error: unknown }).error
       }
       if (response.status >= 400) throw result
-      return result
+      return result as T
     }
   }
 
-  auth(url, options) {
+  auth(url: string, options: AuthOptions): void {
     if (url === '/api/auth/signin') {
       return
     }
