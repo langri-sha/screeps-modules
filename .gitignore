@@ -33,4 +33,5 @@ node_modules/
 !/pnpm-workspace.yaml
 !/.config
 !/.config/wt.toml
+coverage/
 !/.projenrc.mts
