@@ -21,10 +21,12 @@
   },
   "devDependencies": {
     "@langri-sha/eslint-config": "0.9.19",
+    "@langri-sha/prettier": "0.4.11",
     "@langri-sha/projen-project": "0.38.0",
     "ava": "^8.0.0",
     "eslint": "10.12.0",
     "nyc": "^18.0.0",
+    "prettier": "3.9.9",
     "projen": "0.104.1",
     "tsx": "4.23.15"
   },

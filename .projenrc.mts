@@ -26,7 +26,12 @@ const project = new Project({
     repository: 'git+https://github.com/langri-sha/screeps-modules.git',
 
     deps: ['debug@^4.0.0'],
-    devDeps: ['@langri-sha/eslint-config@0.9.19', 'ava@^8.0.0', 'nyc@^18.0.0'],
+    devDeps: [
+      '@langri-sha/eslint-config@0.9.19',
+      '@langri-sha/prettier@0.4.11',
+      'ava@^8.0.0',
+      'nyc@^18.0.0',
+    ],
   },
   codeowners: {
     '*': '@langri-sha',
@@ -43,6 +48,9 @@ const project = new Project({
   },
   npmIgnore: {
     ignorePatterns: ['/*.yaml', '/CODEOWNERS', '/test.js'],
+  },
+  prettier: {
+    ignorePatterns: ['CHANGELOG.md'],
   },
   pnpmWorkspace: {
     minimumReleaseAgeExclude: ['@langri-sha/*', ...Project.presetPackages],
