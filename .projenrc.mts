@@ -52,7 +52,7 @@ const project = new Project({
   lintStaged: {},
   lintSynthesized: {},
   npmIgnore: {
-    ignorePatterns: ['/*.yaml', '/CODEOWNERS', '/test.js'],
+    ignorePatterns: ['*.test.*', '/*.yaml', '/CODEOWNERS'],
   },
   prettier: {
     ignorePatterns: ['CHANGELOG.md'],
