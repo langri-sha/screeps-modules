@@ -1,11 +1,11 @@
 import { createServer } from 'node:http'
 import { gunzipSync, gzipSync } from 'node:zlib'
 
-import test from 'ava'
+import { expect, onTestFinished, test } from '@langri-sha/vitest'
 
 import ScreepsModules from './index.js'
 
-async function serve(t, respond) {
+async function serve(respond) {
   const requests = []
   const server = createServer(async (req, res) => {
     const chunks = []
@@ -24,56 +24,56 @@ async function serve(t, respond) {
     res.end(payload)
   })
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
-  t.teardown(() => new Promise((resolve) => server.close(resolve)))
+  onTestFinished(() => new Promise((resolve) => server.close(resolve)))
   return { url: `http://127.0.0.1:${server.address().port}`, requests }
 }
 
-test('commit sends JSON and Basic auth over HTTP', async (t) => {
-  const { url, requests } = await serve(t, () => [200, '{"ok":1}'])
+test('commit sends JSON and Basic auth over HTTP', async () => {
+  const { url, requests } = await serve(() => [200, '{"ok":1}'])
   const client = new ScreepsModules({
     serverUrl: url,
     email: 'foo',
     password: 'bar',
   })
-  t.deepEqual(await client.commit('default', { main: 'code' }), { ok: 1 })
-  t.is(requests[0].method, 'POST')
-  t.is(requests[0].url, '/api/user/code')
-  t.is(requests[0].headers.authorization, 'Basic Zm9vOmJhcg==')
-  t.is(requests[0].headers['content-type'], 'application/json')
-  t.is(requests[0].headers.accept, 'application/json')
-  t.deepEqual(JSON.parse(requests[0].body), {
+  expect(await client.commit('default', { main: 'code' })).toEqual({ ok: 1 })
+  expect(requests[0].method).toBe('POST')
+  expect(requests[0].url).toBe('/api/user/code')
+  expect(requests[0].headers.authorization).toBe('Basic Zm9vOmJhcg==')
+  expect(requests[0].headers['content-type']).toBe('application/json')
+  expect(requests[0].headers.accept).toBe('application/json')
+  expect(JSON.parse(requests[0].body)).toEqual({
     branch: 'default',
     modules: { main: 'code' },
   })
 })
 
-test('commit omits branch when modules are first', async (t) => {
-  const { url, requests } = await serve(t, () => [200, '{"ok":1}'])
+test('commit omits branch when modules are first', async () => {
+  const { url, requests } = await serve(() => [200, '{"ok":1}'])
   await new ScreepsModules({ serverUrl: url }).commit({ main: 'code' })
-  t.deepEqual(JSON.parse(requests[0].body), { modules: { main: 'code' } })
+  expect(JSON.parse(requests[0].body)).toEqual({ modules: { main: 'code' } })
 })
 
-test('signin sends credentials in JSON without an auth header', async (t) => {
-  const { url, requests } = await serve(t, () => [
-    200,
-    '{"ok":1,"token":"new"}',
-  ])
+test('signin sends credentials in JSON without an auth header', async () => {
+  const { url, requests } = await serve(() => [200, '{"ok":1,"token":"new"}'])
   const client = new ScreepsModules({
     serverUrl: url,
     email: 'foo',
     password: 'bar',
     token: 'old',
   })
-  t.is(await client.refreshToken(), 'new')
-  t.is(client.options.token, 'new')
-  t.is(requests[0].url, '/api/auth/signin')
-  t.falsy(requests[0].headers.authorization)
-  t.falsy(requests[0].headers['x-token'])
-  t.deepEqual(JSON.parse(requests[0].body), { email: 'foo', password: 'bar' })
+  expect(await client.refreshToken()).toBe('new')
+  expect(client.options.token).toBe('new')
+  expect(requests[0].url).toBe('/api/auth/signin')
+  expect(requests[0].headers.authorization).toBeFalsy()
+  expect(requests[0].headers['x-token']).toBeFalsy()
+  expect(JSON.parse(requests[0].body)).toEqual({
+    email: 'foo',
+    password: 'bar',
+  })
 })
 
-test('token and server password are sent without Basic auth', async (t) => {
-  const { url, requests } = await serve(t, () => [200, 'ok'])
+test('token and server password are sent without Basic auth', async () => {
+  const { url, requests } = await serve(() => [200, 'ok'])
   const client = new ScreepsModules({
     serverUrl: url,
     token: 'abc',
@@ -81,115 +81,105 @@ test('token and server password are sent without Basic auth', async (t) => {
     password: 'bar',
     serverPassword: 'secret',
   })
-  t.is(await client.request('/test'), 'ok')
-  t.is(requests[0].headers['x-token'], 'abc')
-  t.is(requests[0].headers['x-username'], 'abc')
-  t.is(requests[0].headers['x-server-password'], 'secret')
-  t.falsy(requests[0].headers.authorization)
+  expect(await client.request('/test')).toBe('ok')
+  expect(requests[0].headers['x-token']).toBe('abc')
+  expect(requests[0].headers['x-username']).toBe('abc')
+  expect(requests[0].headers['x-server-password']).toBe('secret')
+  expect(requests[0].headers.authorization).toBeFalsy()
 })
 
-test('custom base path, branch query, and gzip accept header are preserved', async (t) => {
-  const { url, requests } = await serve(t, () => [200, '{"ok":1}'])
-  t.deepEqual(
+test('custom base path, branch query, and gzip accept header are preserved', async () => {
+  const { url, requests } = await serve(() => [200, '{"ok":1}'])
+  expect(
     await new ScreepsModules({ serverUrl: `${url}/foo/` }).retrieve('sim'),
-    { ok: 1 },
-  )
-  t.is(requests[0].url, '/foo/api/user/code?branch=sim')
-  t.true(requests[0].headers['accept-encoding'].includes('gzip'))
+  ).toEqual({ ok: 1 })
+  expect(requests[0].url).toBe('/foo/api/user/code?branch=sim')
+  expect(requests[0].headers['accept-encoding'].includes('gzip')).toBe(true)
 })
 
-test('gzip commit uploads compressed JSON bytes', async (t) => {
-  const { url, requests } = await serve(t, () => [200, 'ok'])
+test('gzip commit uploads compressed JSON bytes', async () => {
+  const { url, requests } = await serve(() => [200, 'ok'])
   await new ScreepsModules({ serverUrl: url, gzip: true }).commit({
     foo: 'bar',
   })
-  t.is(requests[0].headers['content-encoding'], 'gzip')
-  t.is(requests[0].headers['content-type'], 'application/json')
-  t.deepEqual(JSON.parse(gunzipSync(requests[0].body)), {
+  expect(requests[0].headers['content-encoding']).toBe('gzip')
+  expect(requests[0].headers['content-type']).toBe('application/json')
+  expect(JSON.parse(gunzipSync(requests[0].body))).toEqual({
     modules: { foo: 'bar' },
   })
 })
 
-test('retrieve decodes gzipped JSON', async (t) => {
+test('retrieve decodes gzipped JSON', async () => {
   const payload = gzipSync(JSON.stringify({ main: 'code' }))
-  const { url } = await serve(t, () => [
+  const { url } = await serve(() => [
     200,
     payload,
     { 'Content-Encoding': 'gzip' },
   ])
-  t.deepEqual(await new ScreepsModules({ serverUrl: url }).retrieve(), {
+  expect(await new ScreepsModules({ serverUrl: url }).retrieve()).toEqual({
     main: 'code',
   })
 })
 
-test('response token rotates and 401 clears it', async (t) => {
-  const { url } = await serve(t, (_, count) =>
+test('response token rotates and 401 clears it', async () => {
+  const { url } = await serve((_, count) =>
     count === 1 ? [200, 'ok', { 'X-Token': 'new' }] : [401, 'Unauthorized'],
   )
   const client = new ScreepsModules({ serverUrl: url, token: 'old' })
   await client.request('/token')
-  t.is(client.options.token, 'new')
-  await client.request('/unauthorized').then(
-    () => t.fail('Expected a 401 rejection'),
-    (error) => t.is(error, 'Unauthorized'),
-  )
-  t.is(client.options.token, '')
+  expect(client.options.token).toBe('new')
+  await expect(client.request('/unauthorized')).rejects.toBe('Unauthorized')
+  expect(client.options.token).toBe('')
 })
 
-test('401 response token replaces the cleared token', async (t) => {
-  const { url } = await serve(t, () => [
+test('401 response token replaces the cleared token', async () => {
+  const { url } = await serve(() => [
     401,
     'Unauthorized',
     { 'X-Token': 'replacement' },
   ])
   const client = new ScreepsModules({ serverUrl: url, token: 'old' })
-  await client.request('/test').then(
-    () => t.fail('Expected a 401 rejection'),
-    (error) => t.is(error, 'Unauthorized'),
-  )
-  t.is(client.options.token, 'replacement')
+  await expect(client.request('/test')).rejects.toBe('Unauthorized')
+  expect(client.options.token).toBe('replacement')
 })
 
-test('JSON error property rejects on success and failure statuses', async (t) => {
-  const { url } = await serve(t, (_, count) => [
+test('JSON error property rejects on success and failure statuses', async () => {
+  const { url } = await serve((_, count) => [
     count === 1 ? 200 : 400,
     '{"error":"Bad response"}',
   ])
   const client = new ScreepsModules({ serverUrl: url })
-  await client.request('/first', { json: true }).then(
-    () => t.fail('Expected a body error'),
-    (error) => t.is(error, 'Bad response'),
+  await expect(client.request('/first', { json: true })).rejects.toBe(
+    'Bad response',
   )
-  await client.request('/second', { json: true }).then(
-    () => t.fail('Expected an HTTP error'),
-    (error) => t.is(error, 'Bad response'),
+  await expect(client.request('/second', { json: true })).rejects.toBe(
+    'Bad response',
   )
 })
 
-test('HTTP failure rejects with its response body', async (t) => {
-  const { url } = await serve(t, () => [500, 'Server failed'])
-  await new ScreepsModules({ serverUrl: url }).request('/test').then(
-    () => t.fail('Expected an HTTP error'),
-    (error) => t.is(error, 'Server failed'),
-  )
+test('HTTP failure rejects with its response body', async () => {
+  const { url } = await serve(() => [500, 'Server failed'])
+  await expect(
+    new ScreepsModules({ serverUrl: url }).request('/test'),
+  ).rejects.toBe('Server failed')
 })
 
-test('network failure rejects without an HTTP response', async (t) => {
+test('network failure rejects without an HTTP response', async () => {
   const server = createServer()
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
   const url = `http://127.0.0.1:${server.address().port}`
   await new Promise((resolve) => server.close(resolve))
-  await t.throwsAsync(new ScreepsModules({ serverUrl: url }).request('/test'), {
-    instanceOf: TypeError,
-  })
+  await expect(
+    new ScreepsModules({ serverUrl: url }).request('/test'),
+  ).rejects.toBeInstanceOf(TypeError)
 })
 
-test('caller cancellation rejects with its original reason', async (t) => {
+test('caller cancellation rejects with its original reason', async () => {
   let received
   const started = new Promise((resolve) => {
     received = resolve
   })
-  const { url } = await serve(t, async () => {
+  const { url } = await serve(async () => {
     received()
     await new Promise((resolve) => setTimeout(resolve, 100))
     return [200, 'late']
@@ -202,105 +192,98 @@ test('caller cancellation rejects with its original reason', async (t) => {
   })
   await started
   controller.abort(reason)
-  await pending.then(
-    () => t.fail('Expected cancellation'),
-    (error) => t.is(error, reason),
-  )
+  await expect(pending).rejects.toBe(reason)
 })
 
-test('timeout bounds the request and rejects with TimeoutError', async (t) => {
-  const { url } = await serve(t, async () => {
+test('timeout bounds the request and rejects with TimeoutError', async () => {
+  const { url } = await serve(async () => {
     await new Promise((resolve) => setTimeout(resolve, 100))
     return [200, 'late']
   })
   const client = new ScreepsModules({ serverUrl: url })
-  await t.throwsAsync(client.request('/slow', { timeout: 20 }), {
+  await expect(client.request('/slow', { timeout: 20 })).rejects.toMatchObject({
     name: 'TimeoutError',
   })
 })
 
-test('zero disables the timeout and invalid values reject', async (t) => {
-  const { url } = await serve(t, () => [200, 'ok'])
+test('zero disables the timeout and invalid values reject', async () => {
+  const { url } = await serve(() => [200, 'ok'])
   const client = new ScreepsModules({ serverUrl: url })
-  t.is(await client.request('/test', { timeout: 0 }), 'ok')
-  await t.throwsAsync(client.request('/test', { timeout: -1 }), {
-    instanceOf: RangeError,
-  })
-  await t.throwsAsync(client.request('/test', { timeout: 2147483648 }), {
-    instanceOf: RangeError,
-  })
+  expect(await client.request('/test', { timeout: 0 })).toBe('ok')
+  await expect(client.request('/test', { timeout: -1 })).rejects.toBeInstanceOf(
+    RangeError,
+  )
+  await expect(
+    client.request('/test', { timeout: 2147483648 }),
+  ).rejects.toBeInstanceOf(RangeError)
 })
 
-test('same-origin redirect retains authentication', async (t) => {
-  const { url, requests } = await serve(t, (req) =>
+test('same-origin redirect retains authentication', async () => {
+  const { url, requests } = await serve((req) =>
     req.url === '/start' ? [307, '', { Location: '/next' }] : [200, 'ok'],
   )
-  t.is(
+  expect(
     await new ScreepsModules({ serverUrl: url, token: 'abc' }).request(
       '/start',
     ),
-    'ok',
-  )
-  t.is(requests.length, 2)
-  t.is(requests[1].headers['x-token'], 'abc')
+  ).toBe('ok')
+  expect(requests.length).toBe(2)
+  expect(requests[1].headers['x-token']).toBe('abc')
 })
 
-test('POST redirect switches to GET without forwarding the body', async (t) => {
-  const { url, requests } = await serve(t, (req) =>
+test('POST redirect switches to GET without forwarding the body', async () => {
+  const { url, requests } = await serve((req) =>
     req.url === '/start' ? [303, '', { Location: '/next' }] : [200, 'ok'],
   )
   const client = new ScreepsModules({ serverUrl: url })
-  t.is(
+  expect(
     await client.request('/start', { method: 'POST', json: { value: 1 } }),
-    'ok',
-  )
-  t.is(requests[1].method, 'GET')
-  t.is(requests[1].body.length, 0)
-  t.falsy(requests[1].headers['content-encoding'])
+  ).toBe('ok')
+  expect(requests[1].method).toBe('GET')
+  expect(requests[1].body.length).toBe(0)
+  expect(requests[1].headers['content-encoding']).toBeFalsy()
 })
 
 for (const status of [301, 302]) {
-  test(`${status} rewrites POST to GET without forwarding the body`, async (t) => {
-    const { url, requests } = await serve(t, (req) =>
+  test(`${status} rewrites POST to GET without forwarding the body`, async () => {
+    const { url, requests } = await serve((req) =>
       req.url === '/start' ? [status, '', { Location: '/next' }] : [200, 'ok'],
     )
     const client = new ScreepsModules({ serverUrl: url })
-    t.is(
+    expect(
       await client.request('/start', { method: 'POST', json: { value: 1 } }),
-      'ok',
-    )
-    t.is(requests[1].method, 'GET')
-    t.is(requests[1].body.length, 0)
-    t.falsy(requests[1].headers['content-type'])
+    ).toBe('ok')
+    expect(requests[1].method).toBe('GET')
+    expect(requests[1].body.length).toBe(0)
+    expect(requests[1].headers['content-type']).toBeFalsy()
   })
 }
 
-test('303 preserves HEAD', async (t) => {
-  const { url, requests } = await serve(t, (req) =>
+test('303 preserves HEAD', async () => {
+  const { url, requests } = await serve((req) =>
     req.url === '/start' ? [303, '', { Location: '/next' }] : [200, 'ok'],
   )
   const client = new ScreepsModules({ serverUrl: url })
-  t.is(await client.request('/start', { method: 'HEAD' }), '')
-  t.is(requests[1].method, 'HEAD')
+  expect(await client.request('/start', { method: 'HEAD' })).toBe('')
+  expect(requests[1].method).toBe('HEAD')
 })
 
-test('308 preserves POST method and body', async (t) => {
-  const { url, requests } = await serve(t, (req) =>
+test('308 preserves POST method and body', async () => {
+  const { url, requests } = await serve((req) =>
     req.url === '/start' ? [308, '', { Location: '/next' }] : [200, 'ok'],
   )
   const client = new ScreepsModules({ serverUrl: url })
-  t.is(
+  expect(
     await client.request('/start', { method: 'POST', json: { value: 1 } }),
-    'ok',
-  )
-  t.is(requests[1].method, 'POST')
-  t.deepEqual(JSON.parse(requests[1].body), { value: 1 })
-  t.is(requests[1].headers['content-type'], 'application/json')
+  ).toBe('ok')
+  expect(requests[1].method).toBe('POST')
+  expect(JSON.parse(requests[1].body)).toEqual({ value: 1 })
+  expect(requests[1].headers['content-type']).toBe('application/json')
 })
 
-test('cross-origin redirect does not send credentials', async (t) => {
-  const destination = await serve(t, () => [200, 'leaked'])
-  const source = await serve(t, () => [
+test('cross-origin redirect does not send credentials', async () => {
+  const destination = await serve(() => [200, 'leaked'])
+  const source = await serve(() => [
     302,
     '',
     { Location: `${destination.url}/next` },
@@ -310,40 +293,35 @@ test('cross-origin redirect does not send credentials', async (t) => {
     token: 'abc',
     serverPassword: 'secret',
   })
-  await t.throwsAsync(client.request('/start'), {
+  await expect(client.request('/start')).rejects.toMatchObject({
     message: 'Cross-origin redirect is not allowed',
   })
-  t.is(destination.requests.length, 0)
+  expect(destination.requests.length).toBe(0)
 })
 
-test('cross-origin redirect also blocks Basic auth', async (t) => {
-  const destination = await serve(t, () => [200, 'leaked'])
-  const source = await serve(t, () => [301, '', { Location: destination.url }])
+test('cross-origin redirect also blocks Basic auth', async () => {
+  const destination = await serve(() => [200, 'leaked'])
+  const source = await serve(() => [301, '', { Location: destination.url }])
   const client = new ScreepsModules({
     serverUrl: source.url,
     email: 'foo',
     password: 'bar',
   })
-  await t.throwsAsync(client.request('/start'), {
+  await expect(client.request('/start')).rejects.toMatchObject({
     message: 'Cross-origin redirect is not allowed',
   })
-  t.is(destination.requests.length, 0)
+  expect(destination.requests.length).toBe(0)
 })
 
-test('too many redirects reject before another request', async (t) => {
-  const { url, requests } = await serve(t, () => [
-    307,
-    '',
-    { Location: '/again' },
-  ])
-  await t.throwsAsync(
+test('too many redirects reject before another request', async () => {
+  const { url, requests } = await serve(() => [307, '', { Location: '/again' }])
+  await expect(
     new ScreepsModules({ serverUrl: url }).request('/start'),
-    { message: 'Too many redirects' },
-  )
-  t.is(requests.length, 11)
+  ).rejects.toMatchObject({ message: 'Too many redirects' })
+  expect(requests.length).toBe(11)
 })
 
-test.serial('HTTPS server URL is passed to fetch', async (t) => {
+test('HTTPS server URL is passed to fetch', async () => {
   const originalFetch = globalThis.fetch
   let target
   globalThis.fetch = async (url) => {
@@ -351,19 +329,18 @@ test.serial('HTTPS server URL is passed to fetch', async (t) => {
     return new Response('ok')
   }
   try {
-    t.is(
+    expect(
       await new ScreepsModules({
         serverUrl: 'https://screeps.example/path',
       }).request('/test'),
-      'ok',
-    )
-    t.is(target.href, 'https://screeps.example/path/test')
+    ).toBe('ok')
+    expect(target.href).toBe('https://screeps.example/path/test')
   } finally {
     globalThis.fetch = originalFetch
   }
 })
 
-test('aliases call commit and retrieve', (t) => {
+test('aliases call commit and retrieve', () => {
   const calls = []
   class Client extends ScreepsModules {
     commit(...args) {
@@ -379,7 +356,7 @@ test('aliases call commit and retrieve', (t) => {
   client.down('sim')
   client.push('sim', {})
   client.pull('sim')
-  t.deepEqual(calls, [
+  expect(calls).toEqual([
     ['retrieve', 'sim'],
     ['commit', 'sim', {}],
     ['retrieve', 'sim'],

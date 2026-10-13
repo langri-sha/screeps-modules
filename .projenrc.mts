@@ -30,8 +30,9 @@ const project = new Project({
       '@langri-sha/eslint-config@0.9.19',
       '@langri-sha/lint-staged@0.9.10',
       '@langri-sha/prettier@0.4.11',
-      'ava@^8.0.0',
-      'nyc@^18.0.0',
+      '@langri-sha/vitest@0.2.3',
+      '@vitest/coverage-v8@5.0.3',
+      'vitest@5.0.3',
     ],
   },
   codeowners: {
@@ -66,8 +67,10 @@ const project = new Project({
 project.package?.addField('packageManager', 'pnpm@12.10.1')
 
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
-project.package?.setScript('debug', 'DEBUG=client ava --serial')
-project.package?.setScript('test', 'nyc ava --verbose')
+project.package?.setScript('debug', 'DEBUG=client vitest run')
+project.package?.setScript('test', 'vitest run --coverage')
 project.package?.setScript('lint', 'eslint .')
+
+project.gitignore.addPatterns('coverage/')
 
 project.synth()

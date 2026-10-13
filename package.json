@@ -27,12 +27,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "debug": "DEBUG=client ava --serial",
+    "debug": "DEBUG=client vitest run",
     "default": "projen default",
     "lint": "eslint .",
     "prepare": "husky",
     "start": "pnpm run -s lint; pnpm run -s test",
-    "test": "nyc ava --verbose",
+    "test": "vitest run --coverage",
     "worktrunk:dry-run": "projen worktrunk:dry-run",
     "worktrunk:show": "projen worktrunk:show"
   },
@@ -44,14 +44,15 @@
     "@langri-sha/lint-staged": "0.9.10",
     "@langri-sha/prettier": "0.4.11",
     "@langri-sha/projen-project": "0.38.0",
-    "ava": "^8.0.0",
+    "@langri-sha/vitest": "0.2.3",
+    "@vitest/coverage-v8": "5.0.3",
     "eslint": "10.12.0",
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
-    "nyc": "^18.0.0",
     "prettier": "3.9.9",
     "projen": "0.104.1",
-    "tsx": "4.23.15"
+    "tsx": "4.23.15",
+    "vitest": "5.0.3"
   },
   "packageManager": "pnpm@12.10.1",
   "engines": {
