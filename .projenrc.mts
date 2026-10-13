@@ -46,6 +46,7 @@ const project = new Project({
       },
     ],
   },
+  lintSynthesized: {},
   npmIgnore: {
     ignorePatterns: ['/*.yaml', '/CODEOWNERS', '/test.js'],
   },
