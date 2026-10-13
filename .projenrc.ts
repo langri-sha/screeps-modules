@@ -173,6 +173,8 @@ project.package?.addField('publishConfig', {
   types: 'dist/index.d.ts',
 })
 
+project.package?.setScript('smoke', 'node scripts/smoke.js')
+
 project.package?.setScript(
   'prepublishOnly',
   'rm -rf dist; tsc --project tsconfig.build.json',
