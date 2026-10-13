@@ -24,6 +24,7 @@ node_modules/
 !/CODEOWNERS
 !/.editorconfig
 !/license
+!/.npmignore
 !/pnpm-workspace.yaml
 !/.config
 !/.config/wt.toml
