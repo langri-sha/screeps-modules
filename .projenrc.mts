@@ -30,6 +30,7 @@ const project = new Project({
       '@langri-sha/eslint-config@0.9.19',
       '@langri-sha/lint-staged@0.9.10',
       '@langri-sha/prettier@0.4.11',
+      '@langri-sha/tsconfig@1.1.1',
       '@langri-sha/vitest@0.2.3',
       '@vitest/coverage-v8@5.0.3',
       'vitest@5.0.3',
@@ -81,6 +82,14 @@ const project = new Project({
         minimumReleaseAge: null,
       },
     ],
+  },
+  typeScriptConfig: {
+    config: {
+      compilerOptions: {
+        noEmit: true,
+      },
+      include: ['index.d.ts', 'types.test.ts'],
+    },
   },
   worktrunk: {},
 })

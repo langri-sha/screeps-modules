@@ -182,6 +182,9 @@ importers:
       '@langri-sha/projen-project':
         specifier: 0.38.0
         version: 0.38.0(@babel/core@7.29.7(supports-color@7.2.0))(eslint@10.12.0(supports-color@7.2.0))(husky@9.1.7)(lint-staged@17.6.0)(prettier@3.9.9)(projen@0.104.1(constructs@10.8.1))(supports-color@7.2.0)(tsx@4.23.15)(typescript@5.9.3)
+      '@langri-sha/tsconfig':
+        specifier: 1.1.1
+        version: 1.1.1(typescript@5.9.3)
       '@langri-sha/vitest':
         specifier: 0.2.3
         version: 0.2.3(vitest@5.0.3)
@@ -206,6 +209,9 @@ importers:
       tsx:
         specifier: 4.23.15
         version: 4.23.15
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
       vitest:
         specifier: 5.0.3
         version: 5.0.3(@types/node@26.6.5)(@vitest/coverage-v8@5.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1))
@@ -622,6 +628,11 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  '@langri-sha/tsconfig@1.1.1':
+    resolution: {integrity: sha512-NyBkC7/AlAJwiqgLmKDShhxEXpdZY/J/TE0oMjWCv1B3kYjGuliwwy8QrE/6dCt7JX2yWYatRKyZOunrBjHhnQ==}
+    peerDependencies:
+      typescript: ^5.5.0 || ^6.0.0 || ^7.0.0
 
   '@langri-sha/vitest@0.2.3':
     resolution: {integrity: sha512-TZ4LTiy4zHcxuW+Eb9tlyM0VNQBkd5DBm24XhhzZwscsXDjpQ/yed3LYjF/BI3qa6tIbw5hIGaEW+nrR0XZZiA==}
@@ -3051,6 +3062,10 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
+
+  '@langri-sha/tsconfig@1.1.1(typescript@5.9.3)':
+    dependencies:
+      typescript: 5.9.3
 
   '@langri-sha/vitest@0.2.3(vitest@5.0.3)':
     dependencies:

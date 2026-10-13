@@ -16,5 +16,6 @@ jobs:
       packages: true
       prettier: true
       projen: true
+      typescript: true
       vitest: true
     secrets: inherit
