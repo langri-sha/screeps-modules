@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "Require Node.js 24, use the built-in fetch in place of request, and ship type declarations",
-  "packageName": "screeps-modules",
-  "email": "filip.dupanovic@gmail.com",
-  "dependentChangeType": "patch"
-}

@@ -1,4 +1,16 @@
-# Change Log
+# Change Log - screeps-modules
+
+<!-- This log was last generated on Tue, 13 Oct 2026 13:04:08 GMT and should not be manually modified. -->
+
+<!-- Start content -->
+
+## 2.0.0
+
+Tue, 13 Oct 2026 13:04:08 GMT
+
+### Major changes
+
+- Require Node.js 24, use the built-in fetch in place of request, and ship type declarations (filip.dupanovic@gmail.com)
 
 ## [1.2.0]
 ### Added

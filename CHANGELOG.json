@@ -1,0 +1,20 @@
+{
+  "name": "screeps-modules",
+  "entries": [
+    {
+      "date": "Tue, 13 Oct 2026 13:04:08 GMT",
+      "version": "2.0.0",
+      "tag": "screeps-modules_v2.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "filip.dupanovic@gmail.com",
+            "package": "screeps-modules",
+            "commit": "cdc0b425dd96b489b72f6f014fcc9ca31373ccb9",
+            "comment": "Require Node.js 24, use the built-in fetch in place of request, and ship type declarations"
+          }
+        ]
+      }
+    }
+  ]
+}
