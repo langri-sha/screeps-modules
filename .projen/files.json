@@ -11,6 +11,7 @@
     ".projen/files.json",
     ".projen/tasks.json",
     "CODEOWNERS",
+    "dagger.toml",
     "eslint.config.mjs",
     "license",
     "lint-staged.config.mjs",
