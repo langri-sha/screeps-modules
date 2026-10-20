@@ -89,7 +89,7 @@ const project = new Project({
           },
         },
         vitest: {
-          source: 'github.com/langri-sha/dagger/vitest@v1.4.0',
+          source: 'github.com/langri-sha/dagger/vitest@v1.4.1',
         },
         typescript: {
           source: 'github.com/langri-sha/dagger/typescript@v1.4.1',
