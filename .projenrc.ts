@@ -73,6 +73,7 @@ const project = new Project({
       modules: {
         ci: {
           source: 'github.com/langri-sha/dagger/ci@v1.7.0',
+          generate: { skip: ['projen'] },
         },
         eslint: {
           source: 'dagger.io/js/eslint',
@@ -96,6 +97,9 @@ const project = new Project({
         },
         beachball: {
           source: 'github.com/langri-sha/dagger/beachball@v1.7.0',
+        },
+        projen: {
+          source: 'github.com/langri-sha/dagger/projen@v1.7.0',
         },
       },
     },
