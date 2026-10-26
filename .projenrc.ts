@@ -113,6 +113,7 @@ const project = new Project({
   eslint: {
     config: [],
   },
+  githubTemplates: {},
   husky: {
     'pre-commit': 'lint-staged',
   },
