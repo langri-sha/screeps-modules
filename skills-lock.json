@@ -3,7 +3,7 @@
   "skills": {
     "create-commit": {
       "source": "langri-sha/skills",
-      "ref": "c0cb19cc68f9c597ac580c0e415bf99dcb69d3fd",
+      "ref": "76be751c884853388b62f6356e0986c6f52f569b",
       "sourceType": "github",
       "skillPath": "create-commit/SKILL.md",
       "computedHash": "1d9a18c716f3e0bbfe84349ea374fdaea9216528dad569c10b9087246bb8a121",
@@ -11,10 +11,10 @@
     },
     "create-pr": {
       "source": "langri-sha/skills",
-      "ref": "c0cb19cc68f9c597ac580c0e415bf99dcb69d3fd",
+      "ref": "76be751c884853388b62f6356e0986c6f52f569b",
       "sourceType": "github",
       "skillPath": "create-pr/SKILL.md",
-      "computedHash": "a693dc1d90fb9cb68b169d990c02dac23179532012cdba96f25a842af835e318",
+      "computedHash": "230c89ae37b66b68758c1b20d4ed9a8459e6df2d3f03b94334a519e34e02e376",
       "via": "."
     }
   }

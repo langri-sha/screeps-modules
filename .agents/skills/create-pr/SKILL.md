@@ -99,19 +99,19 @@ Locate the template (`.github/PULL_REQUEST_TEMPLATE.md`, then
 `.github/pull_request_template.md`, then repo root, then `docs/`). Keep the
 whole body under 150 words, whatever the template asks for:
 
-- **Summary** — why the change exists, plus what the diff can't show:
-  manual steps, risk, rollout. One to three sentences.
-- **Changes** — never list them; the diff and the commits already do. Skip
-  the section, or use one sentence for a decision a reviewer would miss.
+- **Summary** — why the change exists, plus what the diff can't show: manual
+  steps, risk, rollout. One to three sentences.
+- **Changes** — never list them; the diff and the commits already do. Skip the
+  section, or use one sentence for a decision a reviewer would miss.
 - **Test plan** — one line naming what ran. No checklists.
-- Skip sections with nothing to say instead of writing N/A, and add no
-  sections of your own. Leave all checkboxes unchecked.
-- Write as the author, in the first person or with no attribution. Never
-  name the author or refer to them in the third person.
+- Skip sections with nothing to say instead of writing N/A, and add no sections
+  of your own. Leave all checkboxes unchecked.
+- Write as the author, in the first person or with no attribution. Never name
+  the author or refer to them in the third person.
 - Include `Closes #123` / `Fixes #123` when the branch resolves an issue.
 
-If no template exists, write a short paragraph and a one-line test plan,
-without headings.
+If no template exists, write a short paragraph and a one-line test plan, without
+headings.
 
 ### 7. Infer Metadata
 
