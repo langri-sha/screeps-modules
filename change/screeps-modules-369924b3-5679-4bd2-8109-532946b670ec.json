@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Pin skills to v1.0.0",
+  "packageName": "screeps-modules",
+  "email": "filip.dupanovic@gmail.com",
+  "dependentChangeType": "patch"
+}
