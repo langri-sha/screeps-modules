@@ -159,7 +159,7 @@ const project = new Project({
   },
 })
 
-project.package?.addField('packageManager', 'pnpm@12.16.0')
+project.package?.addField('packageManager', 'pnpm@12.16.1')
 
 project.package?.setScript('start', 'pnpm run -s lint; pnpm run -s test')
 project.package?.setScript('debug', 'DEBUG=client vitest run')
