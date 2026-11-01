@@ -180,8 +180,8 @@ importers:
         specifier: 0.4.11
         version: 0.4.11(prettier@3.9.9)
       '@langri-sha/projen-project':
-        specifier: 0.48.0
-        version: 0.48.0(@babel/core@7.29.7(supports-color@7.2.0))(@langri-sha/eslint-config@0.11.0(@typescript-eslint/utils@8.72.1(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint@10.13.0(supports-color@7.2.0))(prettier@3.9.9)(supports-color@7.2.0)(typescript@5.9.3))(@langri-sha/lint-staged@0.9.11(eslint@10.13.0(supports-color@7.2.0))(lint-staged@17.6.0)(prettier@3.9.9))(@langri-sha/prettier@0.4.11(prettier@3.9.9))(beachball@2.66.0(typescript@5.9.3))(eslint@10.13.0(supports-color@7.2.0))(husky@9.1.7)(lint-staged@17.6.0)(prettier@3.9.9)(projen@0.104.1(constructs@10.8.1))(skills@1.7.4)(supports-color@7.2.0)(tsx@4.23.15)(typescript@5.9.3)(vitest@5.0.5)
+        specifier: 0.48.1
+        version: 0.48.1(@babel/core@7.29.7(supports-color@7.2.0))(@langri-sha/eslint-config@0.11.0(@typescript-eslint/utils@8.72.1(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint@10.13.0(supports-color@7.2.0))(prettier@3.9.9)(supports-color@7.2.0)(typescript@5.9.3))(@langri-sha/lint-staged@0.9.11(eslint@10.13.0(supports-color@7.2.0))(lint-staged@17.6.0)(prettier@3.9.9))(@langri-sha/prettier@0.4.11(prettier@3.9.9))(beachball@2.66.0(typescript@5.9.3))(eslint@10.13.0(supports-color@7.2.0))(husky@9.1.7)(lint-staged@17.6.0)(prettier@3.9.9)(projen@0.104.1(constructs@10.8.1))(skills@1.7.4)(supports-color@7.2.0)(tsx@4.23.15)(typescript@5.9.3)(vitest@5.0.5)
       '@langri-sha/tsconfig':
         specifier: 1.1.1
         version: 1.1.1(typescript@5.9.3)
@@ -619,13 +619,13 @@ packages:
     peerDependencies:
       prettier: ^3.0.0
 
-  '@langri-sha/projen-project@0.48.0':
-    resolution: {integrity: sha512-rcpyxaobNVVAiAWXnjNRovNdI7Q6a/0mlhnJoBpiiBI7R2bMj5Mv48DFCg86xP8s1Ft6CrWJfvpwvjs/NiX6oA==}
+  '@langri-sha/projen-project@0.48.1':
+    resolution: {integrity: sha512-igKhyxjoOWGctbge05fmGB/gQDeHbrR1UB4lTuYfqaNRPNzzlC+fXTo5Rl7whEOIWW0d7UoV5bU5O2Jbf7AwzQ==}
     peerDependencies:
       '@babel/core': ^8.0.0
       '@changesets/cli': ^3.0.0
       '@langri-sha/babel-preset': ^0.6.0
-      '@langri-sha/eslint-config': ^0.11.0
+      '@langri-sha/eslint-config': ^0.12.0
       '@langri-sha/lint-staged': ^0.9.0
       '@langri-sha/prettier': ^0.4.0
       '@swc-node/register': ^1.0.0
@@ -2382,8 +2382,8 @@ packages:
     peerDependencies:
       projen: '>=0.86.0 <1.0.0'
 
-  projen-changesets@0.1.1:
-    resolution: {integrity: sha512-vMJpDzd0d/eoWZiNdvYgYPg/tPa5effgorYMRNIiGSjCs4kPy9UB6H6HIedaYc4dk81d1iAvxFrEKcjsyXwgvw==}
+  projen-changesets@0.1.2:
+    resolution: {integrity: sha512-PdUyfTqbVIuUH0oHumxc/VBmtlIPfltnPdSY5Uzak07PZAPKYdnxC7i8LDgbhAFK7kzzDDI0JgitIfx0X+WVaw==}
     peerDependencies:
       projen: '>=0.86.0 <1.0.0'
 
@@ -3421,14 +3421,14 @@ snapshots:
       prettier: 3.9.9
       prettier-plugin-ini: 1.3.0
 
-  '@langri-sha/projen-project@0.48.0(@babel/core@7.29.7(supports-color@7.2.0))(@langri-sha/eslint-config@0.11.0(@typescript-eslint/utils@8.72.1(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint@10.13.0(supports-color@7.2.0))(prettier@3.9.9)(supports-color@7.2.0)(typescript@5.9.3))(@langri-sha/lint-staged@0.9.11(eslint@10.13.0(supports-color@7.2.0))(lint-staged@17.6.0)(prettier@3.9.9))(@langri-sha/prettier@0.4.11(prettier@3.9.9))(beachball@2.66.0(typescript@5.9.3))(eslint@10.13.0(supports-color@7.2.0))(husky@9.1.7)(lint-staged@17.6.0)(prettier@3.9.9)(projen@0.104.1(constructs@10.8.1))(skills@1.7.4)(supports-color@7.2.0)(tsx@4.23.15)(typescript@5.9.3)(vitest@5.0.5)':
+  '@langri-sha/projen-project@0.48.1(@babel/core@7.29.7(supports-color@7.2.0))(@langri-sha/eslint-config@0.11.0(@typescript-eslint/utils@8.72.1(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint@10.13.0(supports-color@7.2.0))(prettier@3.9.9)(supports-color@7.2.0)(typescript@5.9.3))(@langri-sha/lint-staged@0.9.11(eslint@10.13.0(supports-color@7.2.0))(lint-staged@17.6.0)(prettier@3.9.9))(@langri-sha/prettier@0.4.11(prettier@3.9.9))(beachball@2.66.0(typescript@5.9.3))(eslint@10.13.0(supports-color@7.2.0))(husky@9.1.7)(lint-staged@17.6.0)(prettier@3.9.9)(projen@0.104.1(constructs@10.8.1))(skills@1.7.4)(supports-color@7.2.0)(tsx@4.23.15)(typescript@5.9.3)(vitest@5.0.5)':
     dependencies:
       hosted-git-info: 10.1.1
       projen: 0.104.1(constructs@10.8.1)
       projen-babel-config: 0.5.20(@babel/core@7.29.7(supports-color@7.2.0))(projen@0.104.1(constructs@10.8.1))
       projen-beachball: 0.5.16(beachball@2.66.0(typescript@5.9.3))(projen@0.104.1(constructs@10.8.1))
       projen-cargo: 0.2.4(projen@0.104.1(constructs@10.8.1))
-      projen-changesets: 0.1.1(projen@0.104.1(constructs@10.8.1))
+      projen-changesets: 0.1.2(projen@0.104.1(constructs@10.8.1))
       projen-claude: 0.1.1(projen@0.104.1(constructs@10.8.1))
       projen-codeowners: 0.5.16(projen@0.104.1(constructs@10.8.1))
       projen-dagger: 0.4.1(projen@0.104.1(constructs@10.8.1))
@@ -5311,7 +5311,7 @@ snapshots:
     dependencies:
       projen: 0.104.1(constructs@10.8.1)
 
-  projen-changesets@0.1.1(projen@0.104.1(constructs@10.8.1)):
+  projen-changesets@0.1.2(projen@0.104.1(constructs@10.8.1)):
     dependencies:
       projen: 0.104.1(constructs@10.8.1)
 
