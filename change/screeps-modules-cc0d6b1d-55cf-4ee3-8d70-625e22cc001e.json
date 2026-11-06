@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Upgrade to TypeScript 6",
+  "packageName": "screeps-modules",
+  "email": "filip.dupanovic@gmail.com",
+  "dependentChangeType": "none"
+}
