@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Return explicitly from refreshToken",
+  "packageName": "screeps-modules",
+  "email": "filip.dupanovic@gmail.com",
+  "dependentChangeType": "none"
+}
