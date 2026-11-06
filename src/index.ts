@@ -75,6 +75,8 @@ export default class ScreepsModules {
 
         return token
       }
+
+      return undefined
     })
   }
 
