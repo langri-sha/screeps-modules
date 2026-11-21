@@ -32,8 +32,8 @@ const project = new Project({
       '@types/debug@4.1.13',
       '@types/node@24.19.2',
       '@langri-sha/vitest@0.2.3',
-      '@vitest/coverage-v8@5.1.0',
-      'vitest@5.1.0',
+      '@vitest/coverage-v8@5.1.1',
+      'vitest@5.1.1',
     ],
   },
   beachball: {
