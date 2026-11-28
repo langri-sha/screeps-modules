@@ -30,7 +30,7 @@ const project = new Project({
     devDeps: [
       '@langri-sha/tsconfig@3.0.0',
       '@types/debug@4.1.13',
-      '@types/node@24.19.2',
+      '@types/node@24.19.3',
       '@langri-sha/vitest@0.2.3',
       '@vitest/coverage-v8@5.1.1',
       'vitest@5.1.1',
